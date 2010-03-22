@@ -471,19 +471,21 @@ class CMyWizard : public CWizard
         /// @brief Try to connect to server.
         /// Repeat until successful, server died or maximum number of retries
         /// reached.
-        Display *WaitForServer(HANDLE serverProcess)
+        Display *WaitForServer(HANDLE serverProcess, std::string &display)
         {
             int     ncycles  = 120;         /* # of cycles to wait */
             int     cycles;                 /* Wait cycle count */
             Display *xd;
 
             for (cycles = 0; cycles < ncycles; cycles++) {
-                if ((xd = XOpenDisplay(NULL))) {
+              if ((xd = XOpenDisplay(display.c_str()))) {
                     return xd;
                 }
                 else {
                     if (WaitForSingleObject(serverProcess, 1000) == WAIT_TIMEOUT)
                         continue;
+                    else
+                      break;
                 }
             }
             return NULL;
@@ -497,7 +499,7 @@ class CMyWizard : public CWizard
 
             // Construct display strings
 	    std::string display_id = ":" + config.display;
-	    std::string display = "localhost" + display_id + ":0";
+	    std::string display = "localhost" + display_id + ".0";
 
             // Build X server commandline
 #if defined (__CYGWIN__)
@@ -593,7 +595,7 @@ class CMyWizard : public CWizard
 		SetEnvironmentVariable("DISPLAY",display.c_str());
 
                 // Wait for server to startup
-                dpy = WaitForServer(pi.hProcess);
+                dpy = WaitForServer(pi.hProcess, display);
                 if (dpy == NULL)
                 {
                     while (hcount--)
