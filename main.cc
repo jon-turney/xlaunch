@@ -69,7 +69,7 @@ class CMyWizard : public CWizard
 		config.Load(filename);
 	    } catch (std::runtime_error &e)
 	    {
-		printf("Fehler: %s\n", e.what());
+		printf("Error: %s\n", e.what());
 	    }
 	}
 
@@ -351,10 +351,10 @@ class CMyWizard : public CWizard
 	    if (GetSaveFileName(&ofn))
 	    {
 		try {
-      		    config.Save(ofn.lpstrFile);
+		    config.Save(ofn.lpstrFile);
 		} catch (std::runtime_error &e)
 		{
-		    printf("Fehler: %s\n", e.what());
+		    printf("Error: %s\n", e.what());
 		}
 	    }
 	}
@@ -690,7 +690,7 @@ int main(int argc, char **argv)
 	return 0;
     } catch (std::runtime_error &e)
     {
-        printf("Fehler: %s\n", e.what());
+        printf("Error: %s\n", e.what());
         return -1;
     }
 }
