@@ -489,7 +489,7 @@ class CMyWizard : public CWizard
             return NULL;
         }
 
-        /// @brief Do the actual start of Xming and clients
+        /// @brief Do the actual start of X server and clients
 	void StartUp()
 	{
 	    std::string buffer;
@@ -499,13 +499,14 @@ class CMyWizard : public CWizard
 	    std::string display_id = ":" + config.display;
 	    std::string display = "localhost" + display_id + ":0";
 
-#ifdef _DEBUG
-            // Debug only: Switch to Xming installation directory
-	    SetCurrentDirectory("C:\\Programme\\Xming");
-#endif
-
-            // Build Xming commandline
+            // Build X server commandline
+#if defined (__CYGWIN__)
+	    buffer = "XWin " + display_id + " ";
+#elif defined (__MINGW__)
 	    buffer = "Xming " + display_id + " ";
+#else
+#error "Don't know X server name"
+#endif
 	    switch (config.window)
 	    {
 		case CConfig::MultiWindow:
@@ -577,7 +578,7 @@ class CMyWizard : public CWizard
 	    sic.cb = sizeof(sic);
 	    ZeroMemory( &pic, sizeof(pic) );
 
-	    // Start Xming process.
+	    // Start X server process
 #ifdef _DEBUG
 	    printf("%s\n", buffer.c_str());
 #endif
@@ -627,7 +628,7 @@ class CMyWizard : public CWizard
 #ifdef _DEBUG
 	    printf("killing process!\n");
 #endif
-            // Check if Xming is still running
+            // Check if X server is still running
 	    DWORD exitcode;
 	    GetExitCodeProcess(pi.hProcess, &exitcode);
 	    unsigned counter = 0;
@@ -636,7 +637,7 @@ class CMyWizard : public CWizard
 		if (++counter > 10)
 		    TerminateProcess(pi.hProcess, (DWORD)-1);
 		else
-		    // Shutdown Xming (the soft way!)
+		    // Shutdown X server (the soft way!)
 		    EnumThreadWindows(pi.dwThreadId, KillWindowsProc, 0);
 		Sleep(500);
 		GetExitCodeProcess(pi.hProcess, &exitcode);
