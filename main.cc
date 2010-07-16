@@ -300,10 +300,11 @@ class CMyWizard : public CWizard
 		return;
 	    SendMessage(cbwnd, CB_RESETCONTENT, 0, 0);
 	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "xterm");
+	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "~/.xinitrc");
+	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "openbox-session");
+	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "wmaker");
 	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "startkde");
 	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "gnome-session");
-	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) ".xinitrc");
-	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "wmaker");
 	    SendMessage(cbwnd, CB_SETCURSEL, 0, 0);
 	}
         /// @brief Fill protocol box with default values.
@@ -562,8 +563,15 @@ class CMyWizard : public CWizard
 			snprintf(cmdline,512,"ssh -Y %s %s",
                                 host.c_str(),config.program.c_str());
 		    client += cmdline;
-		} else
-		    client += config.program.c_str();
+		} else {
+#if defined (__CYGWIN__)
+                  client = "bash -l -c \"" + config.program + "\"";
+#elif defined (__MINGW__)
+                  client = config.program.c_str();
+#else
+#error "Don't know how to start child process on target"
+#endif
+                }
 	    }
 
             // Prepare program startup
