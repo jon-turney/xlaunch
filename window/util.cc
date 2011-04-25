@@ -23,6 +23,8 @@
  * holders shall not be used in advertising or otherwise to promote the sale,
  * use or other dealings in this Software without prior written authorization.
  */
+
+#include <stdio.h>
 #include "util.h"
 
 std::string win32_error::message(DWORD errorcode)

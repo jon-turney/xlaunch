@@ -29,7 +29,7 @@
 #include "config.h"
 #include <prsht.h>
 #include <commctrl.h>
-
+#include <stdio.h>
 #include <stdexcept>
 
 #include <X11/Xlib.h>
