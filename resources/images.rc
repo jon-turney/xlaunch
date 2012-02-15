@@ -23,7 +23,7 @@
  * holders shall not be used in advertising or otherwise to promote the sale,
  * use or other dealings in this Software without prior written authorization.
  */
-IMG_MULTIWINDOW BITMAP "resources\\multiwindow.bmp"
-IMG_WINDOWED BITMAP "resources\\windowed.bmp"
-IMG_FULLSCREEN BITMAP "resources\\fullscreen.bmp"
-IMG_NODECORATION BITMAP "resources\\nodecoration.bmp"
+IMG_MULTIWINDOW BITMAP "resources/multiwindow.bmp"
+IMG_WINDOWED BITMAP "resources/windowed.bmp"
+IMG_FULLSCREEN BITMAP "resources/fullscreen.bmp"
+IMG_NODECORATION BITMAP "resources/nodecoration.bmp"
