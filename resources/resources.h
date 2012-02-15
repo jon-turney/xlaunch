@@ -97,3 +97,5 @@
 #define IDC_CLIPBOARD_DESC       261
 #define IDC_EXTRA_PARAMS         262
 #define IDC_EXTRA_PARAMS_DESC    263
+
+#define IDI_XLAUNCH		400

@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include "wizard.h"
 #include "util.h"
+#include "../resources/resources.h"
 
 CWizard::CWizard() : pages()
 {
@@ -108,6 +109,21 @@ int CWizard::ShowModal()
     return ret;
 }
 
+static int CALLBACK
+PropSheetProc(HWND hwndDlg, UINT uMsg, LPARAM lParam)
+{
+  switch (uMsg)
+    {
+    case PSCB_INITIALIZED:
+      {
+        /* PSH_USEICONID only sets the small icon, so we must set the big icon ourselves */
+        SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_XLAUNCH)));
+        return TRUE;
+      }
+    }
+  return TRUE;
+}
+
 void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
 {
     HPROPSHEETPAGE *phpage = (HPROPSHEETPAGE*)malloc(pages.size() * sizeof(HPROPSHEETPAGE));
@@ -131,19 +147,15 @@ void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
 
     memset(&psh, 0, sizeof(psh));
     psh.dwSize = sizeof(PROPSHEETHEADER);
-#if _WIN32_IE >= 0x0500
-    psh.dwFlags = PSH_WIZARD97 | modeflag;
-#else
-    psh.dwFlags = PSH_WIZARD | modeflag;
-#endif
+    psh.dwFlags = PSH_USEICONID | PSH_USECALLBACK | PSH_WIZARD97 | modeflag;
     psh.hwndParent = NULL;
     psh.hInstance = GetModuleHandle(NULL);
-    psh.pszIcon = NULL;
+    psh.pszIcon = MAKEINTRESOURCE(IDI_XLAUNCH);
     psh.pszCaption = (LPSTR) "Cell Properties";
     psh.nPages = pages.size();
     psh.nStartPage = 0;
     psh.phpage = phpage;
-    psh.pfnCallback = NULL;
+    psh.pfnCallback = PropSheetProc;
 }
 
 DWORD CWizard::PageID(unsigned index)

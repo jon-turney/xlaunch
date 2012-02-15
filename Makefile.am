@@ -25,7 +25,8 @@ RESOURCES_IMAGES = \
 	resources/multiwindow.bmp \
 	resources/fullscreen.bmp \
 	resources/windowed.bmp \
-	resources/nodecoration.bmp
+	resources/nodecoration.bmp \
+	resources/X.ico
 
 RESOURCES_RC = \
 	resources/images.rc \
