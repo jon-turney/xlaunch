@@ -36,13 +36,15 @@ resources/resources.o: \
 	resources/resources.rc \
 	resources/resources.h \
 	$(RESOURCES_RC) \
-	$(RESOURCES_IMAGES)
+	$(RESOURCES_IMAGES) \
+	XLaunch.exe.manifest
 
 EXTRA_DIST = \
 	COPYING \
 	config.h \
 	resources/resources.h \
 	resources/resources.rc \
+	XLaunch.exe.manifest \
 	$(RESOURCES_RC) \
 	$(RESOURCES_IMAGES) \
 	window/dialog.h \
