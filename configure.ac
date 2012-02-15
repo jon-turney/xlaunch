@@ -31,5 +31,27 @@ AC_CHECK_TOOL(WINDRES, windres)
 
 PKG_CHECK_MODULES([LIBX11], [x11])
 
+AC_ARG_WITH([htmlhelp-path],
+  [AS_HELP_STRING([--with-htmlhelp-path],
+    [location of the HtmlHelp SDK])],
+  [htmlhelp_sdk="$withval"],
+  [htmlhelp_sdk="/cygdrive/c/Program Files/HTML Help Workshop/"])
+
+# autoconf and spaces in paths just don't mix
+rm -f /tmp/HtmlHelpWorkshop
+ln -sf "$htmlhelp_sdk" /tmp/HtmlHelpWorkshop
+htmlhelp_sdk=/tmp/HtmlHelpWorkshop
+
+HTMLHELP_CFLAGS="-I$htmlhelp_sdk/include"
+HTMLHELP_LDFLAGS="-L$htmlhelp_sdk/lib -lhtmlhelp"
+AC_SUBST([HTMLHELP_CFLAGS])
+AC_SUBST([HTMLHELP_LDFLAGS])
+
+# check for the existence of htmlhelp.h
+save_CFLAGS=$CFLAGS
+CFLAGS="$CFLAGS $HTMLHELP_CFLAGS"
+AC_CHECK_HEADER([htmlhelp.h], , [AC_MSG_ERROR([HtmlHelp SDK is required])] , [#include <windows.h>])
+CFLAGS=$save_CFLAGS
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -147,7 +147,7 @@ void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
 
     memset(&psh, 0, sizeof(psh));
     psh.dwSize = sizeof(PROPSHEETHEADER);
-    psh.dwFlags = PSH_USEICONID | PSH_USECALLBACK | PSH_WIZARD97 | modeflag;
+    psh.dwFlags = PSH_HASHELP | PSH_USEICONID | PSH_USECALLBACK | PSH_WIZARD97 | modeflag;
     psh.hwndParent = NULL;
     psh.hInstance = GetModuleHandle(NULL);
     psh.pszIcon = MAKEINTRESOURCE(IDI_XLAUNCH);
@@ -195,6 +195,9 @@ INT_PTR CWizard::PageDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     unsigned pageindex;
     switch (uMsg)
     {
+	case WM_HELP:
+	    WizardHelp(hwndDlg, PageIndex(psp));
+	    break;
 	case WM_NOTIFY:
 	    switch (pnmh->code)
 	    {
@@ -228,6 +231,10 @@ INT_PTR CWizard::PageDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                     if (WizardFinish(hwndDlg, PageIndex(psp)))
                         return TRUE;
                     DestroyWindow(GetParent(hwndDlg));
+		    break;
+		case PSN_HELP:
+		    WizardHelp(hwndDlg, PageIndex(psp));
+		    break;
 		case PSN_RESET:
                     if (WizardReset(hwndDlg, PageIndex(psp)))
                         return TRUE;

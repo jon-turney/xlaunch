@@ -49,6 +49,7 @@ class CWizard : public CBaseDialog
         virtual BOOL WizardFinish(HWND hwndDlg, unsigned index) { return FALSE; }
         virtual BOOL WizardReset(HWND hwndDlg, unsigned index) { return FALSE; }
         virtual BOOL WizardActivate(HWND hwndDlg, unsigned index) { return FALSE; }
+        virtual void WizardHelp(HWND hwndDlg, unsigned index){};
     public:
         CWizard();
         void AddPage(const PROPSHEETPAGE &page);

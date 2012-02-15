@@ -29,6 +29,7 @@
 #include "config.h"
 #include <prsht.h>
 #include <commctrl.h>
+#include <htmlhelp.h>
 #include <stdio.h>
 #include <stdexcept>
 
@@ -270,6 +271,25 @@ class CMyWizard : public CWizard
 	    }
 	    return FALSE;
 	}
+	/// @brief Handle F1 and PSN_HELP message.
+	/// @param hwndDlg Handle to active page dialog.
+	/// @param index Index of current page.
+	virtual void WizardHelp(HWND hwndDlg, unsigned index)
+	{
+#ifdef _DEBUG
+	    printf("%s %d\n", __FUNCTION__, index);
+#endif
+	    int offset = 0;
+	    int idd = PageID(index);
+	    if (idd==IDD_DISPLAY) offset = 0;
+	    else if (idd==IDD_CLIENTS) offset = 1;
+	    else if (idd==IDD_PROGRAM) offset = 2;
+	    else if (idd==IDD_XDMCP) offset = 3;
+	    else if (idd==IDD_CLIPBOARD) offset = 4;
+	    else if (idd==IDD_FINISH) offset = 5;
+	    HtmlHelp(hwndDlg, "xlaunch.chm", HH_HELP_CONTEXT, 500 + offset);
+	}
+
     protected:
         /// @brief Enable or disable the control for remote clients.
         /// @param hwndDlg Handle to active page dialog.
@@ -376,6 +396,7 @@ class CMyWizard : public CWizard
                     switch (PageID(PageIndex(psp)))
                     {
                         case IDD_DISPLAY:
+			    psp->dwFlags |= PSP_HASHELP;
                             // Init display dialog. Enable correct check buttons
 			    switch (config.window)
 			    {
@@ -397,6 +418,7 @@ class CMyWizard : public CWizard
                             SetDlgItemText(hwndDlg, IDC_DISPLAY, config.display.c_str());
                             break;
                         case IDD_CLIENTS:
+			    psp->dwFlags |= PSP_HASHELP;
                             // Init client dialog. Enable correct check buttons
 			    switch (config.client)
 			    {
@@ -413,6 +435,7 @@ class CMyWizard : public CWizard
 			    }
                             break;
 			case IDD_PROGRAM:
+			    psp->dwFlags |= PSP_HASHELP;
                             // Init program dialog. Check local and remote buttons
                             CheckRadioButton(hwndDlg, IDC_CLIENT_LOCAL, IDC_CLIENT_REMOTE, config.local?IDC_CLIENT_LOCAL:IDC_CLIENT_REMOTE);
 			    EnableRemoteProgramGroup(hwndDlg, config.local?FALSE:TRUE);
@@ -426,6 +449,7 @@ class CMyWizard : public CWizard
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_HOST, config.host.c_str());
 			    break;
 			case IDD_XDMCP:
+			    psp->dwFlags |= PSP_HASHELP;
                             // Init XDMCP dialog. Check broadcast and indirect button
                             CheckRadioButton(hwndDlg, IDC_XDMCP_QUERY, IDC_XDMCP_BROADCAST, config.broadcast?IDC_XDMCP_BROADCAST:IDC_XDMCP_QUERY);
                             CheckDlgButton(hwndDlg, IDC_XDMCP_INDIRECT, config.indirect?BST_CHECKED:BST_UNCHECKED);
@@ -434,9 +458,13 @@ class CMyWizard : public CWizard
 			    SetDlgItemText(hwndDlg, IDC_XDMCP_HOST, config.xdmcp_host.c_str());
 			    break;
                         case IDD_CLIPBOARD:
+			    psp->dwFlags |= PSP_HASHELP;
                             CheckDlgButton(hwndDlg, IDC_CLIPBOARD, config.clipboard?BST_CHECKED:BST_UNCHECKED);
                             SetDlgItemText(hwndDlg, IDC_EXTRA_PARAMS, config.extra_params.c_str());
                             break;
+			case IDD_FINISH:
+			    psp->dwFlags |= PSP_HASHELP;
+			    break;
 
                     }
                 case WM_COMMAND:
