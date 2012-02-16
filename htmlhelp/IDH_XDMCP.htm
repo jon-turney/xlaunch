@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
+<meta name="description" content="Xming X Server for Windows">
+<meta name="author" content="Colin Harrison">
+<meta name="copyright" content="Colin Harrison">
+<meta name="keywords" content="Xming, XLaunch, Xmingrc">
+<title>XLaunch XDMCP settings</title>
+<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="common.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="screen.css">
+</head>
+<body lang="en" dir="ltr">
+<div id="logo"><a href="IDH_CLIPBOARD.htm"><img src="X2.bmp" title="XLaunch Additional parameters" alt="XLaunch Additional parameters"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
+<p style="clear: both;">
+<div id="content" lang="en" dir="ltr">
+<h2><a name="1"></a>XLaunch XDMCP settings</h2>
+<h3><a name="2"></a>XDMCP settings</h3>
+Settings for the <a class="external" href="http://en.wikipedia.org/wiki/XDMCP"><img src="moin-www.png" alt="[WWW]" height="11" width="11">XDMCP</a> mode. This mode is the most problematic, is not secure, and usually requires altering of the remote machine's settings. The XDMCP protocol will send and receive data on port 177/UDP. But the actual connections will be made to the local port 6000+<i>n</i> /TCP, where <i>n</i> is the display number.
+<h4><a name="3"></a>Connect to host</h4>
+Enables XDMCP and sends 'Query' UDP packets to the specified host.<br>
+If you are having problems use Wireshark or equivalent to monitor UDP traffic on the remote host and look for the sequence 'Query' 177/UDP, 'Willing' x/UDP, 'Request' 177/UDP, 'Accept' x/UDP, 'Manage' 177/UDP and see where it stops. If it gets through the sequence then test with local and remote 'xeyes' in multiwindow mode, because the Display Manager acts just like an X client from then on in to provide its login window.
+<h5><a name="4"></a>Use indirect connect</h5>
+Enables XDMCP and sends 'IndirectQuery' packets to the specified host. This host presents a chooser box of several hosts or sends 'ForwardQuery' to another host depending on how it's X Display Manager is configured (via Xaccess file entries).
+<h4><a name="5"></a>Search for hosts (broadcast)</h4>
+Enables XDMCP and broadcasts 'BroadcastQuery' packets to the network. The first responding display manager will be chosen for the session.
+<h3><a name="6"></a>XDMCP remote settings</h3>
+A quick guide to setting insecure XDMCP mode on a remote machine running kdm, gdm, xdm or wdm...<p>
+On the remote *nix machine edit the following files, restart the X Display Manager and run at 'init 5'.
+<ul><li>
+Edit the file Xaccess (each Display Manager has its own).
+Make sure you have a line like this that is uncommented.
+<pre>*     	#any host can get a login window
+</pre></li>
+<li>
+Edit the X Display Manager config file (kdmrc, gdm.config, xdm-config or wdm-config) and change
+<pre>[Xdmcp]
+Enable=false <i>(may be shown as 0 in some distributions)</i>
+  <i>to</i>
+[Xdmcp]
+Enable=true <i>(or 1 in some distributions)</i>
+</pre>
+or for a xdm style configuration
+<pre>DisplayManager.requestPort:	0
+  <i>to</i>
+!DisplayManager.requestPort:	0
+</pre></li></ul>
+<p>
+Copyright &copy; 2005-2007 Colin Harrison <i>All rights reserved</i>
+</div>
+</body>
+</html>

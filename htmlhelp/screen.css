@@ -1,0 +1,301 @@
+/*  screen.css - MoinMoin Default Styles
+
+    Copyright (c) 2001, 2002, 2003 by J�rgen Hermann
+*/
+
+/* content styles */
+
+#content {
+	margin-top: 2em;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #2b5e82;
+}
+
+a:link {
+	background-color: inherit;
+	color: #2b5e82;
+}
+
+a:visited {
+	background-color: inherit;
+	color: #000;
+}
+
+a.nonexistent, a.badinterwiki {
+	background-color: inherit;
+	color: #404040;
+}
+
+pre {
+	border: 1px solid #CBCBCB;
+	background-color: #FFF8ED;
+	color: black;
+}
+
+hr {
+	clear: both;
+	border-style: none;
+	background-color: #CBCBCB;
+	color: #CBCBCB;
+}
+
+/* td {
+	border: 1px solid #EEEEEE;
+} */
+
+.footnotes div {
+	width: 5em;
+	border-top: 1px solid #CBCBCB;
+}
+
+/* user interface styles */
+
+#navtable a:visited {
+	color: #2b5e82;
+}
+
+#navtable {
+	clear: both;
+	font-family: Bitstream Vera Sans, sans-serif;
+	text-align: center;
+	word-spacing: 4pt;
+	background-color: #ffffff;
+	font-size: 15pt;
+	color: #3B80AE;
+}
+
+/* h1 {
+	padding: .2em 1em;
+} */
+
+#title a {
+	text-decoration: none;
+	font-size: 20pt;
+	font-family: Bitstream Vera Sans, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	color: #2b5e82;
+}
+
+#title {
+	clear: left;
+	float: left;
+	display: inline;
+}
+
+
+#logo {
+	text-align: center;
+	display: block;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: 0 0;
+}
+
+*[dir="rtl"] #logo {
+	float: right;
+}
+
+#username {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 1em .3em;
+	text-align: right;
+}
+
+*[dir="rtl"] #username {
+	float: left;
+}
+
+#navibar {
+	clear: both;
+}
+
+*[dir="rtl"] #navibar {
+	clear: right;
+}
+
+#pagetrail {
+	clear: left;
+}
+
+*[dir="rtl"] #pagetrail {
+	clear: right;
+}
+
+#navibar, #pagetrail, #iconbar {
+	margin: .5em 0;
+	padding: 0;
+}
+
+#navibar a, #pagetrail a {
+	text-decoration: none;
+}
+
+#navibar li, #pagetrail li, #iconbar li {
+	display: inline;
+	padding: 0 2px;
+	margin: 0;
+}
+
+#navibar li {
+	border: 3px solid #CBCBCB;
+	background-color: #E5E5E5;
+	color: black;
+	line-height: 2em;
+}
+
+#pagetrail li span {
+	border: 1px solid #EEEECC;
+	background-color: #FFFFDD;
+	color: black;
+}
+
+#pagetrail li:before {
+	content: "» ";
+}
+
+*[dir="rtl"] #pagetrail li:before {
+	content: " «";
+}
+
+#pagetrail li:first-child:before {
+	content: "";
+}
+
+#iconbar {
+	clear: right;
+	float: right;
+	text-align: right;
+	white-space: nowrap;
+}
+
+*[dir="rtl"] #iconbar {
+	float: left;
+	text-align: left;
+}
+
+#footer a:visited {
+	color: #2b5e82;
+}
+
+#message, #footer {
+	clear: both;
+	border: 0px;
+	background-color: #dedede;
+	font-family: Bitstream Vera Sans, sans-serif;
+	color: #2b5e82;
+	margin: .5em 0;
+	padding: .5em;
+}
+
+#footer p, #footer form {
+	margin: 0;
+}
+
+#credits {
+	float: right;
+	text-align: right;
+	max-width: 30%;
+}
+
+*[dir="rtl"] #credits {
+	float: left;
+	text-align: left;
+}
+
+#timings {
+	padding: 0;
+	font-size: 0.8em;
+}
+
+#timings li {
+	display: inline;
+	background-color: #E5E5E5;
+	color: black;
+}
+
+#preview {
+	border: 2px solid #CBCBCB;
+	padding: .5em;
+	background: url(../img/draft.png);
+}
+
+.recentchanges table {
+	width: 100%;
+}
+
+#pageinfo td, .recentchanges td {
+	padding: 0 .3em;
+}
+
+.rcdaybreak td {
+	background-color: #CCCCFF;
+	padding: .2em;
+}
+
+.rcicon1, .rcicon2 {
+	text-align: center;
+}
+
+.rcpagelink {
+	width: 33%;
+}
+
+.rctime {
+	font-size: .9em;
+	color: #4D4D4D;
+}
+
+.rceditor {
+	color: green;
+}
+
+.rccomment {
+	color: red;
+	width: 66%;
+}
+
+.rcrss {
+	float: right;
+}
+
+.recentchanges[dir="rtl"] .rcrss {
+	float: left;
+}
+
+.diff {
+        width:99%;
+}
+
+.diff-title {
+	background-color: #C0C0C0;
+}
+
+.diff-added {
+	background-color: #E0FFE0;
+	vertical-align: sub;
+}
+
+.diff-removed {
+	background-color: #FFFFE0;
+	vertical-align: sub;
+}
+
+.diff-added span {
+	background-color: #80FF80;
+}
+
+.diff-removed span {
+	background-color: #FFFF80;
+}
+
+.searchresult dd span {
+	font-weight: bold;
+}

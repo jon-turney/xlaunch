@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
+<meta name="description" content="Xming X Server for Windows">
+<meta name="author" content="Colin Harrison">
+<meta name="copyright" content="Colin Harrison">
+<meta name="keywords" content="Xming, XLaunch, Xmingrc">
+<title>XLaunch Display settings</title>
+<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="common.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="screen.css">
+</head>
+<body lang="en" dir="ltr">
+<div id="logo"><a href="IDH_CLIENTS.htm"><img src="X2.bmp" title="XLaunch Session type" alt="XLaunch Session type"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
+<p style="clear: both;">
+<div id="content" lang="en" dir="ltr">
+<h1>XLaunch Wizard</h1>
+XLaunch is a wizard to make starting <a class="external" href="http://www.straightrunning.com/XmingNotes"><img src="moin-www.png" alt="[WWW]" height="11" width="11">Xming</a> sessions easy.<br>
+You can just simply start the <a class="external" href="http://en.wikipedia.org/wiki/X_Window_System"><img src="moin-www.png" alt="[WWW]" height="11" width="11">X</a> <a class="external" href="http://en.wikipedia.org/wiki/Xorg"><img src="moin-www.png" alt="[WWW]" height="11" width="11">server</a> and run X clients latter by hand, but stating XDMCP or one X client automatically (via SSH if remote) is provided.
+<h2><a name="1"></a>XLaunch Display settings</h2>
+<h3><a name="2"></a>Display settings</h3>
+This dialog sets the way Xming displays programs.
+Select the display settings appropriate to your requirements.
+<h4><a name="3"></a>Multiple windows</h4>
+Start the integrated Microsoft Windows-based window manager which launches each top-level X window in its own Windows window. Use this mode if you don't understand the others. An exception is X windows of type '_net_wm_window_type_dock' which are rendered frameless and topmost (e.g. kde's kicker).
+<h4><a name="4"></a>One window</h4>
+The X server appears as a single Windows window and all X windows are contained within this window. This mode requires an external window manager. Typically this mode would be used for <a class="external" href="http://en.wikipedia.org/wiki/XDMCP"><img src="moin-www.png" alt="[WWW]" height="11" width="11">XDMCP</a> login to a remote machine.<p>
+The window size can be altered using the '-screen' parameter, for example enter
+<pre>-screen 0 1024x768+125+100@1
+</pre>
+on the <a href="IDH_CLIPBOARD.htm" title="XLaunch Additional parameters">Additional parameters</a> page of this wizard for a 1024x768 window size, offset 125,100 as screen scr_num 0 on the 1st monitor (the default).
+<h4><a name="5"></a>Fullscreen</h4>
+This mode is like single window mode except that the X server window takes the full screen, covering completely the Windows desktop. This mode requires an external window manager.
+<h4><a name="6"></a>One window without titlebar</h4>
+This mode is like single window mode except that the X server window does not have a title bar or border, thus maximizing the amount of space available for X windows within the X server window. This mode requires an external window manager.
+<h4><a name="7"></a>Display number</h4>
+The display (or X Window server) number (default 0). The phrase 'display' is usually used to refer to a collection of physical monitors (and screens, see below) that share a common keyboard and mouse.<br>
+On first glance the terms client and server in an X Window system appear backwards. Think of the server as the end providing the service. The service provided by X is access to the window, keyboard and mouse. On starting, the server creates a TCP end point and does a passive open on port 6000+<i>n</i>, where <i>n</i> is the display number. When a client is started on another host, it creates a TCP end point and performs an active open to port 6000+<i>n</i> on the server. Each client gets its own TCP connection to the server.
+<h4><a name="8"></a>-screen scr_num @m</h4>
+No specific entry method is provided in XLaunch for the screen number, enable different screens (scr_num) on different physical monitors (@m) via the '-screen' parameter.<br>
+In X a multiple screen display may be implemented in several ways. There might be two physical monitors, linked to form a single display or two screens might be defined as different ways of using the same physical monitor. By default, windows are always placed on screen 0 (scr_num 0) but you can place a client window on screen 1 by specifying the screen number in the -display option when starting the client.
+<h2><a name="9"></a>Authors</h2>
+XLaunch was written by Alexander Gottwald and has been extensively upgraded and extended by Colin Harrison.
+<p>
+Copyright &copy; 2005-2007 Colin Harrison <i>All rights reserved</i>
+</div>
+</body>
+</html>

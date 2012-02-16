@@ -1,0 +1,6 @@
+#define IDH_DISPLAY 500
+#define IDH_CLIENTS 501
+#define IDH_PROGRAM 502
+#define IDH_XDMCP 503
+#define IDH_CLIPBOARD 504
+#define IDH_FINISH 505

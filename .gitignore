@@ -11,3 +11,5 @@ depcomp
 install-sh
 missing
 *.tar.bz2
+htmlhelp/xlaunch.chm
+htmlhelp/xlaunch.hhc

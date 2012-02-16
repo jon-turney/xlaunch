@@ -320,7 +320,7 @@ class CMyWizard : public CWizard
 	    else if (idd==IDD_XDMCP) offset = 3;
 	    else if (idd==IDD_EXTRA) offset = 4;
 	    else if (idd==IDD_FINISH) offset = 5;
-	    HtmlHelp(hwndDlg, "xlaunch.chm", HH_HELP_CONTEXT, 500 + offset);
+	    HtmlHelp(hwndDlg, "htmlhelp/xlaunch.chm", HH_HELP_CONTEXT, 500 + offset);
 	}
 
     protected:

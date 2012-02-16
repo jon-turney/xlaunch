@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
+<meta name="description" content="Xming X Server for Windows">
+<meta name="author" content="Colin Harrison">
+<meta name="copyright" content="Colin Harrison">
+<meta name="keywords" content="Xming, XLaunch, Xmingrc">
+<title>XLaunch Additional parameters</title>
+<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="common.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="screen.css">
+</head>
+<body lang="en" dir="ltr">
+<div id="logo"><a href="IDH_FINISH.htm"><img src="X2.bmp" title="XLaunch Finish configuration" alt="XLaunch Finish configuration"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
+<p style="clear: both;">
+<div id="content" lang="en" dir="ltr">
+<h2><a name="1"></a>XLaunch Additional parameters</h2>
+<h3><a name="2"></a>Additional parameters</h3>
+This is where the more obtuse settings can be made. If in doubt enter nothing.
+<h4><a name="3"></a>Clipboard</h4>
+Enables the integration between the Xming clipboard and Windows clipboard. This is usually a good thing to have enabled.
+<h4><a name="4"></a>No Access Control</h4>
+Turns off server access control. Available as a debugging aid when not running SSH X11 forwarding or XDMCP.
+<h4><a name="5"></a>Remote font server (if any)</h4>
+Enter the hostname of a <a class="external" href="http://en.wikipedia.org/wiki/X_Font_Server"><img src="moin-www.png" alt="[WWW]" height="11" width="11">font server</a> on your network, typically a Unix or Linux machine with this capability.
+The font server is assumed to be available on port 7100/TCP.
+<h4><a name="6"></a>Additional parameters for Xming</h4>
+Enter all other command line parameters needed by you for Xming. If unsure enter nothing.<br>
+For a list of  parameters read the <a class="external" href="http://www.straightrunning.com/XmingNotes/xming.php"><img src="moin-www.png" alt="[WWW]" height="11" width="11">Xming Manual</a>, this excludes all the X commands enter '-help' and Next/Finish for a complete listing.
+<h4><a name="7"></a>Additional parameters for PuTTY or SSH</h4>
+Enter all other command line parameters needed by you for PuTTY (plink.exe) or SSH (ssh.exe). If unsure enter nothing.
+<p>
+Copyright &copy; 2005-2007 Colin Harrison <i>All rights reserved</i>
+</div>
+</body>
+</html>

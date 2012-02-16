@@ -44,8 +44,10 @@ htmlhelp_sdk=/tmp/HtmlHelpWorkshop
 
 HTMLHELP_CFLAGS="-I$htmlhelp_sdk/include"
 HTMLHELP_LDFLAGS="-L$htmlhelp_sdk/lib -lhtmlhelp"
+HHC="$htmlhelp_sdk/hhc"
 AC_SUBST([HTMLHELP_CFLAGS])
 AC_SUBST([HTMLHELP_LDFLAGS])
+AC_SUBST([HHC])
 
 # check for the existence of htmlhelp.h
 save_CFLAGS=$CFLAGS
@@ -55,5 +57,5 @@ CFLAGS=$save_CFLAGS
 
 PKG_CHECK_MODULES([LIBXML2], [libxml-2.0])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile htmlhelp/Makefile])
 AC_OUTPUT
