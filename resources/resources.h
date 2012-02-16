@@ -103,5 +103,6 @@
 #define IDC_WGL_DESC             265
 #define IDC_DISABLEAC            268
 #define IDC_DISABLEAC_DESC       269
+#define IDC_XDMCP_TERMINATE      270
 
 #define IDI_XLAUNCH		400

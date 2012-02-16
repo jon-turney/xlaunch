@@ -206,6 +206,10 @@ class CMyWizard : public CWizard
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
 		    else
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
+                    if (IsDlgButtonChecked(hwndDlg, IDC_XDMCP_TERMINATE))
+                        config.xdmcpterminate = true;
+                    else
+                        config.xdmcpterminate = false;
 		    return TRUE;
                 case IDD_EXTRA:
                     // check for clipboard
@@ -492,6 +496,7 @@ class CMyWizard : public CWizard
 			    EnableXDMCPQueryGroup(hwndDlg, config.broadcast?FALSE:TRUE);
                             // Set hostname
 			    SetDlgItemText(hwndDlg, IDC_XDMCP_HOST, config.xdmcp_host.c_str());
+			    CheckDlgButton(hwndDlg, IDC_XDMCP_TERMINATE, config.xdmcpterminate?BST_CHECKED:BST_UNCHECKED);
 			    break;
                         case IDD_EXTRA:
 			    psp->dwFlags |= PSP_HASHELP;
@@ -604,6 +609,8 @@ class CMyWizard : public CWizard
 		    buffer += config.xdmcp_host;
             buffer += " ";
 		}
+                if (config.xdmcpterminate)
+                    buffer += "-terminate ";
 	    }
             if (config.clipboard)
                 buffer += "-clipboard ";

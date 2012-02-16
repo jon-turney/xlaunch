@@ -44,6 +44,7 @@ struct CConfig
     bool clipboard;
     bool wgl;
     bool disableac;
+    bool xdmcpterminate;
     std::string extra_params;
     CConfig() : window(MultiWindow),
                 client(NoClient),
@@ -63,6 +64,7 @@ struct CConfig
                 clipboard(true),
                 wgl(true),
                 disableac(false),
+                xdmcpterminate(false),
                 extra_params()
     {
     };
