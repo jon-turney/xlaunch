@@ -42,6 +42,7 @@ struct CConfig
     std::string xdmcp_host;
     bool clipboard;
     bool wgl;
+    bool disableac;
     std::string extra_params;
 #ifdef _DEBUG
     CConfig() : window(MultiWindow), client(StartProgram), local(true), display("1"),

@@ -99,5 +99,7 @@
 #define IDC_EXTRA_PARAMS_DESC    263
 #define IDC_WGL                  264
 #define IDC_WGL_DESC             265
+#define IDC_DISABLEAC            268
+#define IDC_DISABLEAC_DESC       269
 
 #define IDI_XLAUNCH		400

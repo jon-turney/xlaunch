@@ -62,6 +62,8 @@
 #define STR_CLIPBOARD_DESC          "Start the integrated clipboard manager"
 #define STR_WGL                     "Native opengl"
 #define STR_WGL_DESC                "Use the native windows opengl library (wgl). Make sure to export the LIBGL_ALWAYS_INDIRECT environment variable."
+#define STR_DISABLEAC               "Disable access control"
+#define STR_DISABLEAC_DESC          "Use this when you want the X server to accept connections from all clients."
 #define STR_EXTRA_PARAMS_DESC       "Additional parameters for X server"
 
 #define STR_CAPTION_FINISH          "Finish configuration"

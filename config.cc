@@ -90,6 +90,7 @@ void CConfig::Save(const char *filename)
     setAttribute(root, "Clipboard", clipboard?"True":"False");
     setAttribute(root, "ExtraParams", extra_params.c_str());
     setAttribute(root, "Wgl", wgl?"True":"False");
+    setAttribute(root, "DisableAC", disableac?"True":"False");
 
     xmlSaveFormatFileEnc(filename, doc, "UTF-8", 1);
 
@@ -177,6 +178,7 @@ void CConfig::Load(const char *filename)
     getAttributeBool(root, "Clipboard", clipboard);
     getAttribute(root, "ExtraParams", extra_params);
     getAttributeBool(root, "Wgl", wgl);
+    getAttributeBool(root, "DisableAC", disableac);
 
     /*free the document */
     xmlFreeDoc(doc);
