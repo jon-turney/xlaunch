@@ -63,7 +63,7 @@ void CWindow::CWindowClass::Register()
         throw win32_error("RegisterClassEx failed");
 }
 
-CWindow::CWindow(const char *_title) : title(_title), hwnd(NULL), parent(NULL), bounds(), owndproc(NULL), showing(FALSE)
+CWindow::CWindow(const char *_title) : title(_title), bounds(), hwnd(NULL), parent(NULL), owndproc(NULL), showing(FALSE)
 {
     style = WS_CHILD;
     exstyle = 0;

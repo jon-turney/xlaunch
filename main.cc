@@ -426,7 +426,6 @@ class CMyWizard : public CWizard
         /// @param psp Handle to sheet paramters.
         virtual INT_PTR PageDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, PROPSHEETPAGE *psp)
         {
-            HWND hwnd;
             switch (uMsg)
             {
                 case WM_INITDIALOG:
@@ -717,7 +716,7 @@ class CMyWizard : public CWizard
 	    }
 
 	    // Wait until any child process exits.
-	    DWORD ret = WaitForMultipleObjects(hcount, handles, FALSE, INFINITE );
+	    WaitForMultipleObjects(hcount, handles, FALSE, INFINITE);
 
 #ifdef _DEBUG
 	    printf("killing process!\n");
