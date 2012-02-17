@@ -43,12 +43,12 @@ struct CConfig
     bool clipboard;
     std::string extra_params;
 #ifdef _DEBUG
-    CConfig() : window(MultiWindow), client(StartProgram), local(false), display("1"),
+    CConfig() : window(MultiWindow), client(StartProgram), local(true), display("1"),
                 protocol("Putty"), program("xterm"), host("lupus"), user("ago"),
                 broadcast(false), indirect(false), xdmcp_host("lupus"),
                 clipboard(true), extra_params() {};
 #else
-    CConfig() : window(MultiWindow), client(StartProgram), local(false), display("0"),
+    CConfig() : window(MultiWindow), client(StartProgram), local(true), display("0"),
                 protocol("Putty"), program("xterm"), host(""), user(""),
                 broadcast(true), indirect(false), xdmcp_host(""),
                 clipboard(true), extra_params() {};
