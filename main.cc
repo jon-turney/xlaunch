@@ -610,8 +610,12 @@ class CMyWizard : public CWizard
 	    }
             if (config.clipboard)
                 buffer += "-clipboard ";
+            else
+                buffer += "-noclipboard ";
             if (config.wgl)
                 buffer += "-wgl ";
+            else
+                buffer += "-nowgl ";
             if (config.disableac)
                 buffer += "-ac ";
             if (!config.extra_params.empty())
