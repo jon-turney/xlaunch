@@ -41,17 +41,18 @@ struct CConfig
     bool indirect;
     std::string xdmcp_host;
     bool clipboard;
+    bool wgl;
     std::string extra_params;
 #ifdef _DEBUG
     CConfig() : window(MultiWindow), client(StartProgram), local(true), display("1"),
                 protocol("Putty"), program("xterm"), host("lupus"), user("ago"),
                 broadcast(false), indirect(false), xdmcp_host("lupus"),
-                clipboard(true), extra_params() {};
+                clipboard(true), extra_params(), wgl(true) {};
 #else
     CConfig() : window(MultiWindow), client(StartProgram), local(true), display("0"),
                 protocol("Putty"), program("xterm"), host(""), user(""),
                 broadcast(true), indirect(false), xdmcp_host(""),
-                clipboard(true), extra_params() {};
+                clipboard(true), extra_params(), wgl(true) {};
 #endif
     void Load(const char* filename);
     void Save(const char* filename);

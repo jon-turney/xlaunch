@@ -198,6 +198,11 @@ class CMyWizard : public CWizard
                         config.clipboard = true;
                     else
                         config.clipboard = false;
+                    // check for wgl
+                    if (IsDlgButtonChecked(hwndDlg, IDC_WGL))
+                        config.wgl = true;
+                    else
+                        config.wgl = false;
                     // read parameters
 		    {
 			char buffer[512];
@@ -463,6 +468,7 @@ class CMyWizard : public CWizard
                         case IDD_CLIPBOARD:
 			    psp->dwFlags |= PSP_HASHELP;
                             CheckDlgButton(hwndDlg, IDC_CLIPBOARD, config.clipboard?BST_CHECKED:BST_UNCHECKED);
+                            CheckDlgButton(hwndDlg, IDC_WGL, config.wgl?BST_CHECKED:BST_UNCHECKED);
                             SetDlgItemText(hwndDlg, IDC_EXTRA_PARAMS, config.extra_params.c_str());
                             break;
 			case IDD_FINISH:
@@ -572,6 +578,8 @@ class CMyWizard : public CWizard
 	    }
             if (config.clipboard)
                 buffer += "-clipboard ";
+            if (config.wgl)
+                buffer += "-wgl ";
             if (!config.extra_params.empty())
             {
                 buffer += config.extra_params;

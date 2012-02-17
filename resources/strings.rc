@@ -60,6 +60,8 @@
 #define STR_CAPTION_CLIPBOARD       "Clipboard settings"
 #define STR_CLIPBOARD               "Clipboard"
 #define STR_CLIPBOARD_DESC          "Start the integrated clipboard manager"
+#define STR_WGL                     "Native opengl"
+#define STR_WGL_DESC                "Use the native windows opengl library (wgl). Make sure to export the LIBGL_ALWAYS_INDIRECT environment variable."
 #define STR_EXTRA_PARAMS_DESC       "Additional parameters for X server"
 
 #define STR_CAPTION_FINISH          "Finish configuration"
