@@ -80,8 +80,9 @@ void CConfig::Save(const char *filename)
     }
     setAttribute(root, "LocalClient", local?"True":"False");
     setAttribute(root, "Display", display.c_str());
-    setAttribute(root, "Program", program.c_str());
     setAttribute(root, "RemoteProtocol", protocol.c_str());
+    setAttribute(root, "LocalProgram", localprogram.c_str());
+    setAttribute(root, "RemoteProgram", remoteprogram.c_str());
     setAttribute(root, "RemoteHost", host.c_str());
     setAttribute(root, "RemoteUser", user.c_str());
     setAttribute(root, "XDMCPHost", xdmcp_host.c_str());
@@ -168,8 +169,9 @@ void CConfig::Load(const char *filename)
 
     getAttributeBool(root, "LocalClient", local);
     getAttribute(root, "Display", display);
-    getAttribute(root, "Program", program);
     getAttribute(root, "RemoteProtocol", protocol);
+    getAttribute(root, "LocalProgram", localprogram);
+    getAttribute(root, "RemoteProgram", remoteprogram);
     getAttribute(root, "RemoteHost", host);
     getAttribute(root, "RemoteUser", user);
     getAttribute(root, "XDMCPHost", xdmcp_host);

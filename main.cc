@@ -134,11 +134,20 @@ class CMyWizard : public CWizard
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
 		    return TRUE;
 		case IDD_PROGRAM:
-                    // Check wether local or remote client should be started
+                    // Check whether local or remote client should be started
 		    if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_LOCAL))
+                      {
 			config.local = true;
+			config.protocol = "";
+                      }
 		    else if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_REMOTE))
+                      {
+			char buffer[512];
 			config.local = false;
+			GetDlgItemText(hwndDlg, IDC_CLIENT_PROTOCOL, buffer, 512);
+			buffer[511] = 0;
+			config.protocol = buffer;
+                      }
 		    else
 		    {
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
@@ -155,11 +164,17 @@ class CMyWizard : public CWizard
 			config.host = buffer;
 			GetDlgItemText(hwndDlg, IDC_CLIENT_PROGRAM, buffer, 512);
 			buffer[511] = 0;
-			config.program = buffer;
+			config.localprogram = buffer;
+			GetDlgItemText(hwndDlg, IDC_CLIENT_REMOTEPROGRAM, buffer, 512);
+			buffer[511] = 0;
+			config.remoteprogram = buffer;
 		    }
                     // Check for valid input
-		    if (!config.local && (config.host.empty() || config.program.empty()))
+		    if ((!config.local && (config.host.empty() || config.remoteprogram.empty())) || config.localprogram.empty())
+                      {
+			MessageBox(hwndDlg,"Please fill in details of the program to start", "Error", MB_OK);
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+                      }
 		    else
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
 		    return TRUE;
@@ -316,6 +331,10 @@ class CMyWizard : public CWizard
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROTOCOL_DESC), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_HOST_DESC), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_USER_DESC), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_REMOTEPROGRAM), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_REMOTEPROGRAM_DESC), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM), !state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM_DESC), !state);
 	}
         /// @brief Enable or disable the control for XDMCP connection.
         /// @param hwndDlg Handle to active page dialog.
@@ -349,8 +368,8 @@ class CMyWizard : public CWizard
 	    if (cbwnd == NULL)
 		return;
 	    SendMessage(cbwnd, CB_RESETCONTENT, 0, 0);
-	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "Putty");
-	    //SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "OpenSSH");
+	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "ssh");
+	    SendMessage(cbwnd, CB_ADDSTRING, 0, (LPARAM) "rsh");
 	    SendMessage(cbwnd, CB_SETCURSEL, 0, 0);
 	}
 	void ShowSaveDialog(HWND parent)
@@ -457,8 +476,11 @@ class CMyWizard : public CWizard
 			    FillProgramBox(hwndDlg);
 			    FillProtocolBox(hwndDlg);
                             // Set edit fields
-			    if (!config.program.empty())
-			       	SetDlgItemText(hwndDlg, IDC_CLIENT_PROGRAM, config.program.c_str());
+			    if (!config.localprogram.empty())
+				SetDlgItemText(hwndDlg, IDC_CLIENT_PROGRAM, config.localprogram.c_str());
+			    if (!config.remoteprogram.empty())
+				SetDlgItemText(hwndDlg, IDC_CLIENT_REMOTEPROGRAM, config.remoteprogram.c_str());
+			    SetDlgItemText(hwndDlg, IDC_CLIENT_PROTOCOL, config.protocol.c_str());
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_USER, config.user.c_str());
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_HOST, config.host.c_str());
 			    break;
@@ -602,20 +624,27 @@ class CMyWizard : public CWizard
 		{
 		    char cmdline[512];
                     std::string host = config.host;
+                    std::string rsh_l_option = "";
                     if (!config.user.empty())
+                      {
                         host = config.user + "@" + config.host;
-		    if (config.protocol == "Putty")
-			snprintf(cmdline,512,"plink -X %s %s",
-                                host.c_str(),config.program.c_str());
-		    else
+                        rsh_l_option = "-l " + config.user;
+                      }
+
+                    if (config.protocol == "ssh")
 			snprintf(cmdline,512,"ssh -Y %s %s",
-                                host.c_str(),config.program.c_str());
+                                 host.c_str(),config.remoteprogram.c_str());
+                    else if (config.protocol == "rsh")
+			snprintf(cmdline,512,"rsh %s %s %s",
+                                 rsh_l_option.c_str(),
+                                 config.host.c_str(),config.remoteprogram.c_str());
+
 		    client += cmdline;
 		} else {
 #if defined (__CYGWIN__)
-                  client = "bash -l -c \"" + config.program + "\"";
+                  client = "bash -l -c \"" + config.localprogram + "\"";
 #elif defined (__MINGW__)
-                  client = config.program.c_str();
+                  client = config.localprogram.c_str();
 #else
 #error "Don't know how to start child process on target"
 #endif
@@ -686,7 +715,9 @@ class CMyWizard : public CWizard
 #ifdef _DEBUG
 	    printf("killing process!\n");
 #endif
-            // Check if X server is still running
+            // Check if X server is still running, but only when we started a local program
+            if (config.local)
+            {
 	    DWORD exitcode;
 	    GetExitCodeProcess(pi.hProcess, &exitcode);
 	    unsigned counter = 0;
@@ -701,7 +732,8 @@ class CMyWizard : public CWizard
 		GetExitCodeProcess(pi.hProcess, &exitcode);
 	    }
 	    // Kill the client
-    	    TerminateProcess(pic.hProcess, (DWORD)-1);
+	    TerminateProcess(pic.hProcess, (DWORD)-1);
+            }
 
 	    // Close process and thread handles.
 	    CloseHandle( pi.hProcess );

@@ -34,7 +34,8 @@ struct CConfig
     bool local;
     std::string display;
     std::string protocol;
-    std::string program;
+    std::string localprogram;
+    std::string remoteprogram;
     std::string host;
     std::string user;
     bool broadcast;
@@ -44,19 +45,29 @@ struct CConfig
     bool wgl;
     bool disableac;
     std::string extra_params;
+    CConfig() : window(MultiWindow),
+                client(NoClient),
+                local(true),
 #ifdef _DEBUG
-    CConfig() : window(MultiWindow), client(StartProgram), local(true), display("1"),
-                protocol("Putty"), program("xterm"), host("lupus"), user("ago"),
-                broadcast(false), indirect(false), xdmcp_host("lupus"),
-                clipboard(true), extra_params(), wgl(true) {};
+                display("1"),
 #else
-    CConfig() : window(MultiWindow), client(StartProgram), local(true), display("0"),
-                protocol("Putty"), program("xterm"), host(""), user(""),
-                broadcast(true), indirect(false), xdmcp_host(""),
-                clipboard(true), extra_params(), wgl(true) {};
+                display("0"),
 #endif
-    void Load(const char* filename);
-    void Save(const char* filename);
+                localprogram("xterm"),
+                remoteprogram("xterm"),
+                host(""),
+                user(""),
+                broadcast(false),
+                indirect(false),
+                xdmcp_host(""),
+                clipboard(true),
+                wgl(true),
+                disableac(false),
+                extra_params()
+    {
+    };
+    void Load(const char * filename);
+    void Save(const char * filename);
 };
 
 #endif
