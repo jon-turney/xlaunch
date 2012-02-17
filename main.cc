@@ -59,7 +59,6 @@ class CMyWizard : public CWizard
             AddPage(IDD_CLIENTS, IDS_CLIENTS_TITLE, IDS_CLIENTS_SUBTITLE);
             AddPage(IDD_PROGRAM, IDS_PROGRAM_TITLE, IDS_PROGRAM_SUBTITLE);
             AddPage(IDD_XDMCP, IDS_XDMCP_TITLE, IDS_XDMCP_SUBTITLE);
-            //AddPage(IDD_FONTPATH, IDS_FONTPATH_TITLE, IDS_FONTPATH_SUBTITLE);
             AddPage(IDD_EXTRA, IDS_EXTRA_TITLE, IDS_EXTRA_SUBTITLE);
             AddPage(IDD_FINISH, IDS_FINISH_TITLE, IDS_FINISH_SUBTITLE);
         }
@@ -266,8 +265,6 @@ class CMyWizard : public CWizard
 		case IDD_XDMCP:
 		    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
 		    return TRUE;
-		case IDD_FONTPATH:
-                  // temporary. fontpath is disabled
 		case IDD_EXTRA:
 		    switch (config.client)
 		    {
