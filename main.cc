@@ -60,7 +60,7 @@ class CMyWizard : public CWizard
             AddPage(IDD_PROGRAM, IDS_PROGRAM_TITLE, IDS_PROGRAM_SUBTITLE);
             AddPage(IDD_XDMCP, IDS_XDMCP_TITLE, IDS_XDMCP_SUBTITLE);
             //AddPage(IDD_FONTPATH, IDS_FONTPATH_TITLE, IDS_FONTPATH_SUBTITLE);
-            AddPage(IDD_CLIPBOARD, IDS_CLIPBOARD_TITLE, IDS_CLIPBOARD_SUBTITLE);
+            AddPage(IDD_EXTRA, IDS_EXTRA_TITLE, IDS_EXTRA_SUBTITLE);
             AddPage(IDD_FINISH, IDS_FINISH_TITLE, IDS_FINISH_SUBTITLE);
         }
 
@@ -129,7 +129,7 @@ class CMyWizard : public CWizard
 		    } else if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_NONE))
 		    {
 			config.client = CConfig::NoClient;
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIPBOARD);
+			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
 		    } else
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
 		    return TRUE;
@@ -161,7 +161,7 @@ class CMyWizard : public CWizard
 		    if (!config.local && (config.host.empty() || config.program.empty()))
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
 		    else
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIPBOARD);
+			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
 		    return TRUE;
 		case IDD_XDMCP:
                     // Check for broadcast
@@ -190,9 +190,9 @@ class CMyWizard : public CWizard
 		    if (!config.broadcast && config.xdmcp_host.empty())
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
 		    else
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIPBOARD);
+			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
 		    return TRUE;
-                case IDD_CLIPBOARD:
+                case IDD_EXTRA:
                     // check for clipboard
                     if (IsDlgButtonChecked(hwndDlg, IDC_CLIPBOARD))
                         config.clipboard = true;
@@ -243,7 +243,8 @@ class CMyWizard : public CWizard
 		    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
 		    return TRUE;
 		case IDD_FONTPATH:
-                case IDD_CLIPBOARD: // temporary. fontpath is disabled
+                  // temporary. fontpath is disabled
+		case IDD_EXTRA:
 		    switch (config.client)
 		    {
 			case CConfig::NoClient:
@@ -293,7 +294,7 @@ class CMyWizard : public CWizard
 	    else if (idd==IDD_CLIENTS) offset = 1;
 	    else if (idd==IDD_PROGRAM) offset = 2;
 	    else if (idd==IDD_XDMCP) offset = 3;
-	    else if (idd==IDD_CLIPBOARD) offset = 4;
+	    else if (idd==IDD_EXTRA) offset = 4;
 	    else if (idd==IDD_FINISH) offset = 5;
 	    HtmlHelp(hwndDlg, "xlaunch.chm", HH_HELP_CONTEXT, 500 + offset);
 	}
@@ -465,7 +466,7 @@ class CMyWizard : public CWizard
                             // Set hostname
 			    SetDlgItemText(hwndDlg, IDC_XDMCP_HOST, config.xdmcp_host.c_str());
 			    break;
-                        case IDD_CLIPBOARD:
+                        case IDD_EXTRA:
 			    psp->dwFlags |= PSP_HASHELP;
                             CheckDlgButton(hwndDlg, IDC_CLIPBOARD, config.clipboard?BST_CHECKED:BST_UNCHECKED);
                             CheckDlgButton(hwndDlg, IDC_WGL, config.wgl?BST_CHECKED:BST_UNCHECKED);

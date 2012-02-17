@@ -33,7 +33,7 @@
 #define IDD_PROGRAM             104
 #define IDD_XDMCP               105
 #define IDD_FONTPATH            106
-#define IDD_CLIPBOARD           107
+#define IDD_EXTRA               107
 
 #define IDS_DISPLAY_TITLE       300
 #define IDS_DISPLAY_SUBTITLE    301
