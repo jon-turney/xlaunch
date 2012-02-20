@@ -5,12 +5,13 @@ if DEBUG
 DEBUG_FLAGS=-D_DEBUG
 endif
 
-AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(HTMLHELP_CFLAGS) $(LIBXML2_CFLAGS)
+AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(HTMLHELP_CFLAGS) $(LIBXML2_CFLAGS) -DDOCDIR=\"`cygpath -m @docdir@`\"
 LDADD = -lcomctl32 $(LIBX11_LIBS) $(HTMLHELP_LDFLAGS) $(LIBXML2_LIBS)
 AM_LDFLAGS = -mwindows
 
 xlaunch_SOURCES = \
 	config_libxml2.cc \
+	file.cc \
 	main.cc \
 	window/dialog.cc \
 	window/util.cc \
@@ -43,6 +44,7 @@ resources/resources.o: \
 EXTRA_DIST = \
 	COPYING \
 	config.h \
+	file.h \
 	resources/resources.h \
 	resources/resources.rc \
 	XLaunch.exe.manifest \

@@ -23,10 +23,13 @@
  * holders shall not be used in advertising or otherwise to promote the sale,
  * use or other dealings in this Software without prior written authorization.
  */
+
 #include "window/util.h"
 #include "window/wizard.h"
 #include "resources/resources.h"
 #include "config.h"
+#include "file.h"
+
 #include <prsht.h>
 #include <commctrl.h>
 #include <htmlhelp.h>
@@ -317,7 +320,15 @@ class CMyWizard : public CWizard
 	    else if (idd==IDD_XDMCP) offset = 3;
 	    else if (idd==IDD_EXTRA) offset = 4;
 	    else if (idd==IDD_FINISH) offset = 5;
-	    HtmlHelp(hwndDlg, "htmlhelp/xlaunch.chm", HH_HELP_CONTEXT, 500 + offset);
+
+            // first look for local chm file, so we work uninstalled
+            const char *chmFile;
+            if (FileExists("htmlhelp/xlaunch.chm"))
+              chmFile = "htmlhelp/xlaunch.chm";
+            else
+              chmFile = DOCDIR "/xlaunch.chm";
+
+            HtmlHelp(hwndDlg, chmFile, HH_HELP_CONTEXT, 500 + offset);
 	}
 
     protected:
