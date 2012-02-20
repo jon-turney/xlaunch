@@ -1,0 +1,44 @@
+.TH XLAUNCH 1
+.SH NAME
+xlaunch \- GUI tool for configuring and starting XWin
+.SH SYNOPSIS
+.B xlaunch
+[
+.I -load
+|
+.I -run
+filename.xlaunch
+]
+.SH DESCRIPTION
+The \fBxlaunch\fP program is used to start the \fBXwin\fP server.
+.PP
+If no .xlaunch configuration file is given on the command line,
+\fBxlaunch\fP will present a GUI with the default configuration
+for running \fBXwin\fP.  On completing the configuration, you have the
+option to run \fBXwin\fP using that configuration, and/or to save that
+configuration in a .xlaunch file for later use.
+.PP
+If the \fB-load\fP option is used, \fBxlaunch\fP will present a
+GUI initialized with the configuration loaded from that file.
+.PP
+If the \fB-run\fP option is used, \fBxlaunch\fP will load the
+\fBXwin\fP server configuration from that file, and then run \fBXwin\fP
+using that configuration, and any clients specified by the configuration.
+If the configuration specifies a local client to run, \fBxlaunch\fP
+will wait until that clients exits before exiting.
+.PP
+\fBxlaunch\fP is designed to be associated with the .xlaunch filename
+extension by the Windows shell, so that the Edit and Open verbs use the
+\-load and -run actions, respectively.
+.PP
+.SH FILES
+.TP 15
+.I *.xlaunch
+saved xlaunch configurations.
+.SH "SEE ALSO"
+.BR startxwin(1),
+.BR xinit(1),
+.BR startx(1),
+.BR XWin(1)
+.SH AUTHOR
+Written by Alexander Gottwald and extended by Colin Harrison and Marc Haesen.

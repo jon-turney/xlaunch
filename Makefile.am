@@ -55,4 +55,4 @@ EXTRA_DIST = \
 	window/window.h \
 	window/wizard.h
 
-SUBDIRS = htmlhelp
+SUBDIRS = htmlhelp man

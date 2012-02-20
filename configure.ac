@@ -57,5 +57,5 @@ CFLAGS=$save_CFLAGS
 
 PKG_CHECK_MODULES([LIBXML2], [libxml-2.0])
 
-AC_CONFIG_FILES([Makefile htmlhelp/Makefile])
+AC_CONFIG_FILES([Makefile htmlhelp/Makefile man/Makefile])
 AC_OUTPUT
