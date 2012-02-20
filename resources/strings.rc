@@ -27,11 +27,11 @@
 #define STR_CAPTION_DISPLAY         "Display settings"
 #define STR_MULTIWINDOW             "Multiple windows"
 #define STR_FULLSCREEN              "Fullscreen"
-#define STR_WINDOWED                "One large window"
+#define STR_WINDOWED                "One window"
 #define STR_NODECORATION            "One window without titlebar"
 #define STR_DISPLAY_DESC            "Display number"
 
-#define STR_CAPTION_CLIENTS         "Client startup"
+#define STR_CAPTION_CLIENTS         "Session type"
 #define STR_CLIENT_NONE             "Start no client"
 #define STR_CLIENT_NONE_DESC		"This will just start the X server. You will be able to start local clients later."
 #define STR_CLIENT					"Start a program"
