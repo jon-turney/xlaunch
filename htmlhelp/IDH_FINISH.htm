@@ -2,42 +2,30 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
-<meta name="description" content="Xming X Server for Windows">
-<meta name="author" content="Colin Harrison">
-<meta name="copyright" content="Colin Harrison">
-<meta name="keywords" content="Xming, XLaunch, Xmingrc">
 <title>XLaunch Finish configuration</title>
 <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="common.css">
 <link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="screen.css">
 </head>
 <body lang="en" dir="ltr">
-<div id="logo"><a href="IDH_DISPLAY.htm"><img src="X2.bmp" title="XLaunch Display settings" alt="XLaunch Display settings"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
+<div id="logo"><a href="IDH_AUTHORS.htm"><img src="X2.bmp" title="About XLaunch" alt="About XLaunch"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
 <p style="clear: both;">
 <div id="content" lang="en" dir="ltr">
-<h2><a name="1"></a>XLaunch Finish configuration</h2>
-<h3><a name="2"></a>Finish configuration</h3>
-This is the last page of the XLaunch wizard.<br>
+<h2><a name="1"></a>Finish configuration</h2>
+This is the last page of the XLaunch wizard.<p>
 Select Finish to run the options selected and start the X server and any additional X client selected.
-<h4><a name="3"></a>Save configuration</h4>
-Click this option to save your configuration for reuse.<br>
-You can use XLaunch to start Xming with a saved configuration by clicking the .xlaunch file or like this
-<pre>&gt;XLaunch -run &lt;config.xlaunch&gt;
+<h3><a name="2"></a>Save configuration</h3>
+Click this option to save your configuration for reuse.<p>
+You can use XLaunch to start the X server with a saved configuration by double clicking the .xlaunch file,
+choosing <b>Open</b> from the right-click context menu for the .xlaunch file, or like this
+<pre>XLaunch -run &lt;config.xlaunch&gt;
 </pre>
 <p>
-To use a configuration as preset for new configurations right-click 'Edit' the .xlaunch file or
-<pre>&gt;XLaunch -load &lt;config.xlaunch&gt;
+To edit an existing configuration or use a configuration as a preset for new configuration choose <b>Edit</b>
+from the right-click context menu for the .xlaunch file or
+<pre>XLaunch -load &lt;config.xlaunch&gt;
 </pre>
-To validate a configuration against the XLaunch XML Schema Definition (XSD) file right-click 'Validate' the .xlaunch file or
-<pre>&gt;XLaunch -validate &lt;config.xlaunch&gt;
-</pre>
-XLaunch will enter without a warning or error message if the file is well-formed and is valid with respect to the schema. Validate only works with MSXML versions 6 and 4 (XLaunch works with MSXML versions 6, 4 and 3).
-<h4><a name="4"></a>Include PuTTY Password as insecure clear text</h4>
-The PuTTY Password entry is not saved to the 'config.xlaunch' XML file by default, for security. When a Password has been entered a tag PasswordStart="true" is added to the file so that on reuse, in '-run' mode, the PuTTY password can be re-entered from just one page of this wizard.<br>
-Selection of this option overrides this security measure and saves the PuTTY Password as insecure clear text to 'config.xlaunch'.
-<h4><a name="5"></a>Finish</h4>
-The wizard is closed and Xming is run with your settings, followed automatically by any X client chosen.
-<p>
-Copyright &copy; 2005-2007 Colin Harrison <i>All rights reserved</i>
+<h3><a name="3"></a>Finish</h3>
+The wizard is closed and the X server is run with your settings, followed automatically by any X client chosen.
 </div>
 </body>
 </html>

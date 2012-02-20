@@ -2,10 +2,6 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
-<meta name="description" content="Xming X Server for Windows">
-<meta name="author" content="Colin Harrison">
-<meta name="copyright" content="Colin Harrison">
-<meta name="keywords" content="Xming, XLaunch, Xmingrc">
 <title>XLaunch Start program</title>
 <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="common.css">
 <link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="screen.css">
@@ -14,66 +10,55 @@
 <div id="logo"><a href="IDH_XDMCP.htm"><img src="X2.bmp" title="XLaunch XDMCP settings" alt="XLaunch XDMCP settings"></a><span style="color:#2b5e82;vertical-align:super;font-family:Bitstream Vera Sans,sans-serif;font-weight:bold;font-size:30pt;">Launch</span></div>
 <p style="clear: both;">
 <div id="content" lang="en" dir="ltr">
-<h2><a name="1"></a>XLaunch Start program</h2>
-<h3><a name="2"></a>Start program</h3>
-Enter the name and parameters of a program you want to start and display on the server.
-For example, to run an 'xeyes' on display-number 0
-<pre>xeyes -display localhost:0
+<h2><a name="1"></a>Start program</h2>
+Enter the name and parameters of an X client you want to start and display on the X server.
+For example, to run <b>xeyes</b>
+<pre>xeyes -fg red
 </pre>
-You can also select a program from a list of up to ten X clients. This list can be customised by adding tags Program1="a" to Program10="j" to a config.xlaunch file (i.e. a previously saved XLaunch configuration file).
-<h4><a name="3"></a>Run Local</h4>
+<h3><a name="3"></a>Start program on this computer</h3>
 Start the chosen or entered program (with parameters as required) on the local machine.
-<h4><a name="4"></a>Run Remote</h4>
+<h3><a name="4"></a>Start program on remote computer</h3>
 As above but the program will be run on a remote machine.
-<h5><a name="5"></a>Using PuTTY</h5>
-An X client program can be started remotely via PuTTY SSH (plink.exe command-line connection tool).<p>
-<a class="external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/"><img src="moin-www.png" alt="[WWW]" height="11" width="11">PuTTY</a> is run without an msdos console, as the password can be entered in advance. A password is not needed if using authentication agent 'Pageant' (one of the PuTTY toolset).<p>
-My typical PuTTY settings...<p>
-<a href="PuTTY1.png"><img src="PuTTY1.jpg" title="SSH session." alt="SSH session."></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="PuTTY1a.png"><img src="PuTTY1a.jpg" title="Login username." alt="Login username."></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="PuTTY2.png"><img src="PuTTY2.jpg" title="SSH 2 preferred." alt="SSH 2 preferred."></a><p>
-<a href="PuTTY3.png"><img src="PuTTY3.jpg" title="Private key file." alt="Private key file."></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="PuTTY4.png"><img src="PuTTY4.jpg" title="Use SSH X11 forwarding." alt="Use SSH X11 forwarding."></a>
-<br>The SSH X11 forwarding options are important, notice the 'localhost:0', so run XLaunch 'Display number 0' to suite and enable it in the 'sshd' daemon (sshd_config file) on the remote machine...
+<h4><a name="6"></a>Using SSH</h4>
+
+An X client program can be started remotely via SSH.<p>
+There is no mechanism to save a ssh password for security reasons.<p>
+SSH X11 forwarding must be enabled in the <b>sshd</b> daemon's sshd_config file on the remote machine.
+
 <pre>X11Forwarding yes
 X11DisplayOffset 10
 X11UseLocalhost yes
 </pre>
-Use 'Enable compression' on slow networks.<p>
-The PuTTY Password entry is not saved to the 'config.xlaunch' XML file by default, for security. When a Password has been entered a tag PasswordStart="true" is added to the file so that on reuse, in '-run' mode, the PuTTY password can be re-entered without having to go through the entire wizard. If, as an administrator, you want to use the same configuration file for many users then hand edit the 'master .xlaunch' file to remove the 'RemoteHost' tag (or empty it's entry) to give users access to all the wizard (with a reminder about the need for a PuTTY Password entry).<br>
-The <a href="IDH_FINISH.htm" title="XLaunch Finish configuration">Finish configuration</a> page has an option for overriding this security measure by allowing saving of any PuTTY Password as insecure clear text to 'config.xlaunch'.<p>
-The command run automatically after the X server has started is
-<pre>&gt;plink -ssh -X &lt;user@computer&gt; &lt;program&gt;
-    or
-&gt;plink -ssh -X -pw &lt;password&gt; &lt;user@computer&gt; &lt;program&gt;
-</pre>
-i.e. no password is needed if using 'Pageant', then just leave the wizard 'Password' field blank.<p>
-Try this by hand, from 'Command Prompt', if you have problems.
-<h5><a name="6"></a>Using SSH</h5>
-An X client program can be started remotely via SSH (ssh.exe client tool).<p>
-SSH (e.g. <a class="external" href="http://pigtail.net/LRP/printsrv/cygwin-ssh.html"><img src="moin-www.png" alt="[WWW]" height="11" width="11">Cygwin OpenSSH</a>) is run with an msdos console, as the password has to be entered interactively.<br>
-ssh-agent is no use from 'Command Prompt', since no tty.<br>
-From Cygwin bash you can daemon ssh-agent and run using
+
+<h5><a name="7"></a>Use public key authentication</h5>
+
+To be described.
+
+<h5><a name="7"></a>Prompt for password</h5>
+
+Not yet implemented. ssh is run within a terminal, allowing the password has to be entered interactively.<p>
+
+<h5><a name="8"></a>Use ssh-agent or keychain</h5>
+
+Not yet implemented.
+
+From bash you can start a ssh-agent daemon and run xlaunch using
 <pre>$ keychain id_rsa
 $ . ~/.keychain/$HOSTNAME-sh
-$ cd 'C:/Program Files/Xming'
-$ ./XLaunch -run my_ssh.xlaunch
-</pre> then XLaunch detects 'SSH_AGENT_PID' and runs ssh without an msdos console.<br>
+$ xlaunch -run my_ssh.xlaunch
+</pre>
+Then XLaunch detects <b>SSH_AGENT_PID</b> and runs ssh without prompting for password.<p>
 When finished with ssh-agent
 <pre>$ keychain -k; unset SSH_AGENT_PID; unset SSH_AUTH_SOCK
 </pre><p>
+
+<h5><a name="10"></a>Troubleshooting SSH</h5>
+
 The command run automatically after the X server has started is
-<pre>&gt;ssh -Y &lt;user@computer&gt; &lt;program&gt;
+<pre>ssh -Y &lt;user@computer&gt; &lt;program&gt;
 </pre>
-Try this by hand, from 'Command Prompt', if you have problems.<p>
-As in the 'Using PuTTY' section above SSH X11 forwarding must be enabled in the 'sshd' daemon on the remote machine.
-<h5><a name="7"></a>With compression</h5>
-Enable compression on the SSH connection. SSH compression may be of some help on slower networks, but will slow things down on fast networks.
-<p>
-Copyright &copy; 2005-2007 Colin Harrison <i>All rights reserved</i>
+Try this by hand, from a shell, if you have problems.<p>
+
 </div>
 </body>
 </html>

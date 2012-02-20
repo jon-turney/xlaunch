@@ -18,6 +18,7 @@ IDH_PROGRAM.htm
 IDH_XDMCP.htm
 IDH_CLIPBOARD.htm
 IDH_FINISH.htm
+IDH_AUTHORS.htm
 
 [MAP]
 #include "map.h"

@@ -3,21 +3,12 @@ doc_DATA = xlaunch.chm
 
 HTMLHELP_IMAGES = \
 	moin-www.png \
-	PuTTY1.jpg \
-	PuTTY1.png \
-	PuTTY1a.jpg \
-	PuTTY1a.png \
-	PuTTY2.jpg \
-	PuTTY2.png \
-	PuTTY3.jpg \
-	PuTTY3.png \
-	PuTTY4.jpg \
-	PuTTY4.png \
 	X2.bmp
 
 HTMLHELP_TEXT = \
 	common.css \
 	screen.css \
+	IDH_AUTHORS.htm \
 	IDH_CLIENTS.htm \
 	IDH_CLIPBOARD.htm \
 	IDH_DISPLAY.htm \
