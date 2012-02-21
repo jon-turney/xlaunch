@@ -23,34 +23,68 @@ As above but the program will be run on a remote machine.
 
 An X client program can be started remotely via SSH.<p>
 There is no mechanism to save a ssh password for security reasons.<p>
-SSH X11 forwarding must be enabled in the <b>sshd</b> daemon's sshd_config file on the remote machine.
+SSH X11 forwarding must be enabled in the <b>sshd</b> daemon's sshd_config file on the remote machine, e.g.
 
-<pre>X11Forwarding yes
-X11DisplayOffset 10
-X11UseLocalhost yes
+<pre>
+X11Forwarding yes
 </pre>
 
-<h5><a name="7"></a>Use public key authentication</h5>
+<h5><a name="7"></a>Prompt for ssh password/passphrase</h5>
 
-To be described.
+<b>ssh</b> is run within a terminal, allowing the password or passphrase to be entered interactively.<p>
 
-<h5><a name="7"></a>Prompt for password</h5>
+<h5><a name="8"></a>Use keychain to contact ssh-agent</h5>
 
-Not yet implemented. ssh is run within a terminal, allowing the password has to be entered interactively.<p>
+From <b>bash</b> you can start a <b>ssh-agent</b> daemon using <b>keychain</b>
+(which saves the <b>ssh-agent</b> environment variables to ~/.keychain/${HOSTNAME}-sh,
+so that subsequent non-interactive shells, such as used by xlaunch can source
+the file and make passwordless ssh connections).<p>
 
-<h5><a name="8"></a>Use ssh-agent or keychain</h5>
-
-Not yet implemented.
-
-From bash you can start a ssh-agent daemon and run xlaunch using
-<pre>$ keychain id_rsa
-$ . ~/.keychain/$HOSTNAME-sh
-$ xlaunch -run my_ssh.xlaunch
+e.g. to start <b>ssh-agent</b> and load the key ~/.ssh/ida_rsa into it:
+<pre>
+$ keychain id_rsa
 </pre>
-Then XLaunch detects <b>SSH_AGENT_PID</b> and runs ssh without prompting for password.<p>
-When finished with ssh-agent
-<pre>$ keychain -k; unset SSH_AGENT_PID; unset SSH_AUTH_SOCK
-</pre><p>
+You will be prompted for the key's passphrase.
+<p>
+
+Subsequently, xlaunch can run <b>ssh</b> using this key to authenticate without
+prompting for the passphrase.<p>
+
+When finished, use <b>keychain</b> to stop <b>ssh-agent</b>
+<pre>
+$ keychain -k all
+</pre>
+<p>
+
+See <b>man keychain</b> for more details.
+
+<h5><a name="9"></a>Password-less public key authentication</h5>
+
+If neither of the options above are selected, you must arrange for
+<b>ssh</b> to be able to non-interactively authenticate with the remote
+<b>sshd</b> i.e. install on the remote machine a public key corresponding
+to a local private key which has no passphrase.
+<p>
+
+e.g.
+Create a passphrase-less key-pair, using
+<pre>
+ssh-keygen -f ~/.ssh/example-key -N ''
+</pre>
+append the public key to your ~/.ssh/authorized_keys file on the remote machine,
+<pre>
+ssh-copy-id -i ~/.ssh/example-key.pub <i>user@server</i>
+</pre>
+and instruct the local ssh to use the corresponding private key, by adding to ~/.ssh/config
+(possibly under an appropriate Host section)
+<pre>
+IdentityFile ~/.ssh/example-key
+</pre>
+<p>
+
+See the "AUTHORIZED KEYS FILE FORMAT" section of <b>man sshd</b> and
+the "IdentityFile" section of <b>man ssh_config</b> for more details.
+<p>
 
 <h5><a name="10"></a>Troubleshooting SSH</h5>
 

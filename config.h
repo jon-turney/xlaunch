@@ -46,6 +46,8 @@ struct CConfig
     bool disableac;
     bool xdmcpterminate;
     std::string extra_params;
+    bool keychain;
+    bool terminal;
     CConfig() : window(MultiWindow),
                 client(NoClient),
                 local(true),
@@ -65,7 +67,9 @@ struct CConfig
                 wgl(true),
                 disableac(false),
                 xdmcpterminate(false),
-                extra_params()
+                extra_params(),
+                keychain(false),
+                terminal(true)
     {
     };
     void Load(const char * filename);

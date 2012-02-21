@@ -93,6 +93,8 @@ void CConfig::Save(const char *filename)
     setAttribute(root, "Wgl", wgl?"True":"False");
     setAttribute(root, "DisableAC", disableac?"True":"False");
     setAttribute(root, "XDMCPTerminate", xdmcpterminate?"True":"False");
+    setAttribute(root, "SSHKeyChain", keychain?"True":"False");
+    setAttribute(root, "SSHTerminal", terminal?"True":"False");
 
     xmlSaveFormatFileEnc(filename, doc, "UTF-8", 1);
 
@@ -183,6 +185,8 @@ void CConfig::Load(const char *filename)
     getAttributeBool(root, "Wgl", wgl);
     getAttributeBool(root, "DisableAC", disableac);
     getAttributeBool(root, "XDMCPTerminate", xdmcpterminate);
+    getAttributeBool(root, "SSHKeyChain", keychain);
+    getAttributeBool(root, "SSHTerminal", terminal);
 
     /*free the document */
     xmlFreeDoc(doc);

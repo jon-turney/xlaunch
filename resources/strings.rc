@@ -48,6 +48,8 @@
 #define STR_CLIENT_USER_DESC        "Login as user"
 
 #define STR_CLIENT_REMOTEPROGRAM_DESC     "Remote program"
+#define STR_CLIENT_KEYCHAIN         "Use keychain to contact ssh-agent"
+#define STR_CLIENT_TERMINAL         "Prompt for ssh password/passphrase"
 
 #define STR_CAPTION_XDMCP           "XDMCP settings"
 #define STR_XDMCP_QUERY             "Connect to host"

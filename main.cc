@@ -170,6 +170,16 @@ class CMyWizard : public CWizard
 			GetDlgItemText(hwndDlg, IDC_CLIENT_REMOTEPROGRAM, buffer, 512);
 			buffer[511] = 0;
 			config.remoteprogram = buffer;
+
+                        if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_SSH_KEYCHAIN))
+                          config.keychain = true;
+                        else
+                          config.keychain = false;
+
+                        if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_SSH_TERMINAL))
+                          config.terminal = true;
+                        else
+                          config.terminal = false;
 		    }
                     // Check for valid input
 		    if ((!config.local && (config.host.empty() || config.remoteprogram.empty())) || config.localprogram.empty())
@@ -345,6 +355,8 @@ class CMyWizard : public CWizard
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_USER_DESC), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_REMOTEPROGRAM), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_REMOTEPROGRAM_DESC), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_SSH_TERMINAL), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_SSH_KEYCHAIN), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM), !state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM_DESC), !state);
 	}
@@ -494,6 +506,8 @@ class CMyWizard : public CWizard
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_PROTOCOL, config.protocol.c_str());
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_USER, config.user.c_str());
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_HOST, config.host.c_str());
+			    CheckDlgButton(hwndDlg, IDC_CLIENT_SSH_KEYCHAIN, config.keychain?BST_CHECKED:BST_UNCHECKED);
+			    CheckDlgButton(hwndDlg, IDC_CLIENT_SSH_TERMINAL, config.terminal?BST_CHECKED:BST_UNCHECKED);
 			    break;
 			case IDD_XDMCP:
 			    psp->dwFlags |= PSP_HASHELP;
@@ -575,6 +589,7 @@ class CMyWizard : public CWizard
 	{
 	    std::string buffer;
 	    std::string client;
+	    BOOL showconsole = FALSE;
 
             // Construct display strings
 	    std::string display_id = ":" + config.display;
@@ -650,14 +665,30 @@ class CMyWizard : public CWizard
                       }
 
                     if (config.protocol == "ssh")
-			snprintf(cmdline,512,"ssh -Y %s %s",
+                      {
+                        snprintf(cmdline,512,"ssh -Y %s %s",
                                  host.c_str(),config.remoteprogram.c_str());
+                        client = cmdline;
+
+                        if (config.keychain)
+                          {
+                            client = ". ~/.keychain/$HOSTNAME-sh ; " + client;
+                            client = "bash -c \"" + client + "\"";
+                          }
+
+                        if (config.terminal)
+                          {
+                            showconsole = TRUE;
+                            client = "mintty -e " + client;
+                          }
+                      }
                     else if (config.protocol == "rsh")
-			snprintf(cmdline,512,"rsh %s %s %s",
+                      {
+                        snprintf(cmdline,512,"rsh %s %s %s",
                                  rsh_l_option.c_str(),
                                  config.host.c_str(),config.remoteprogram.c_str());
-
-		    client += cmdline;
+                        client = cmdline;
+                      }
 		} else {
 #if defined (__CYGWIN__)
                   client = "bash -l -c \"" + config.localprogram + "\"";
@@ -685,7 +716,7 @@ class CMyWizard : public CWizard
 
 	    // Start X server process
 #ifdef _DEBUG
-	    printf("%s\n", buffer.c_str());
+	    printf("Server: %s\n", buffer.c_str());
 #endif
 	    if( !CreateProcess( NULL, (CHAR*)buffer.c_str(), NULL, NULL,
                         FALSE, 0, NULL, NULL, &si, &pi ))
@@ -707,13 +738,12 @@ class CMyWizard : public CWizard
                 }
 
 #ifdef _DEBUG
-		printf("%s\n", client.c_str());
+		printf("Client: %s\n", client.c_str());
 #endif
-
-                // Hide a console window
-                // FIXME: This may make it impossible to enter the password
+                // Hide console window, unless showconsole is true
 		sic.dwFlags = STARTF_USESHOWWINDOW;
 		sic.wShowWindow = SW_HIDE;
+		if (showconsole) sic.wShowWindow = SW_NORMAL;
 
 		// Start the child process.
 		if( !CreateProcess( NULL, (CHAR*)client.c_str(), NULL, NULL,
