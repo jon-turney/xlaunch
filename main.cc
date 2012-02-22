@@ -109,7 +109,10 @@ class CMyWizard : public CWizard
                     }
                     // Check for valid input
                     if (config.display.empty())
+                      {
+			MessageBox(hwndDlg,"Please fill in a display number.","Error",MB_OK);
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+                      }
                     else
                         SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
 		    return TRUE;
