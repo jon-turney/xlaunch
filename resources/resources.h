@@ -35,24 +35,6 @@
 #define IDD_FONTPATH            106
 #define IDD_EXTRA               107
 
-#define IDS_DISPLAY_TITLE       300
-#define IDS_DISPLAY_SUBTITLE    301
-#define IDS_CLIENTS_TITLE       302
-#define IDS_CLIENTS_SUBTITLE    303
-#define IDS_PROGRAM_TITLE       304
-#define IDS_PROGRAM_SUBTITLE    305
-#define IDS_XDMCP_TITLE         306
-#define IDS_XDMCP_SUBTITLE      307
-#define IDS_FONTPATH_TITLE      308
-#define IDS_FONTPATH_SUBTITLE   309
-#define IDS_FINISH_TITLE        310
-#define IDS_FINISH_SUBTITLE     311
-#define IDS_CLIPBOARD_TITLE     312
-#define IDS_CLIPBOARD_SUBTITLE  313
-#define IDS_SAVE_TITLE          320
-#define IDS_SAVE_FILETITLE      321
-#define IDS_SAVE_FILTER         322
-
 #define IDC_MULTIWINDOW         200
 #define IDC_WINDOWED            201
 #define IDC_FULLSCREEN          202
@@ -104,5 +86,23 @@
 #define IDC_DISABLEAC            268
 #define IDC_DISABLEAC_DESC       269
 #define IDC_XDMCP_TERMINATE      270
+
+#define IDS_DISPLAY_TITLE             300
+#define IDS_DISPLAY_SUBTITLE          301
+#define IDS_CLIENTS_TITLE             302
+#define IDS_CLIENTS_SUBTITLE          303
+#define IDS_PROGRAM_TITLE             304
+#define IDS_PROGRAM_SUBTITLE          305
+#define IDS_XDMCP_TITLE               306
+#define IDS_XDMCP_SUBTITLE            307
+#define IDS_FONTPATH_TITLE            308
+#define IDS_FONTPATH_SUBTITLE         309
+#define IDS_FINISH_TITLE              310
+#define IDS_FINISH_SUBTITLE           311
+#define IDS_EXTRA_TITLE               312
+#define IDS_EXTRA_SUBTITLE            313
+#define IDS_SAVE_TITLE                320
+#define IDS_SAVE_FILETITLE            321
+#define IDS_SAVE_FILTER               322
 
 #define IDI_XLAUNCH		400
