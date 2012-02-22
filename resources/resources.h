@@ -108,3 +108,4 @@
 #define IDS_SAVE_FILTER               322
 
 #define IDI_XLAUNCH		400
+#define IDI_XLAUNCH_DOCUMENT	401
