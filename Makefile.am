@@ -5,12 +5,12 @@ if DEBUG
 DEBUG_FLAGS=-D_DEBUG
 endif
 
-AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(HTMLHELP_CFLAGS)
-LDADD = -lcomctl32 $(LIBX11_LIBS) $(HTMLHELP_LDFLAGS)
+AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(HTMLHELP_CFLAGS) $(LIBXML2_CFLAGS)
+LDADD = -lcomctl32 $(LIBX11_LIBS) $(HTMLHELP_LDFLAGS) $(LIBXML2_LIBS)
 AM_LDFLAGS = -mwindows
 
 xlaunch_SOURCES = \
-	config.cc \
+	config_libxml2.cc \
 	main.cc \
 	window/dialog.cc \
 	window/util.cc \

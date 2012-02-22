@@ -53,5 +53,7 @@ CFLAGS="$CFLAGS $HTMLHELP_CFLAGS"
 AC_CHECK_HEADER([htmlhelp.h], , [AC_MSG_ERROR([HtmlHelp SDK is required])] , [#include <windows.h>])
 CFLAGS=$save_CFLAGS
 
+PKG_CHECK_MODULES([LIBXML2], [libxml-2.0])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
