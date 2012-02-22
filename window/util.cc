@@ -1111,3 +1111,5 @@ const char * MessageDebug::message_names[MESSAGE_NAMES_LEN] = {
 	"1022",
 	"1023"
 };
+
+const char * MessageDebug::notify_names[NOTIFY_NAMES_LEN];
