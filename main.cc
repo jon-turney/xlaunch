@@ -38,6 +38,12 @@
 
 #include <X11/Xlib.h>
 
+#ifdef _DEBUG
+static bool debug = true;
+#else
+static bool debug = false;
+#endif
+
 /// @brief Send WM_ENDSESSION to all program windows.
 /// This will shutdown the started xserver
 BOOL CALLBACK KillWindowsProc(HWND hwnd, LPARAM lParam)
@@ -260,7 +266,7 @@ class CMyWizard : public CWizard
 	virtual BOOL WizardFinish(HWND hwndDlg, unsigned index)
 	{
 #ifdef _DEBUG
-	    printf("finish %d\n", index);
+	    printf("%s %d\n", __FUNCTION__, index);
 #endif
 	    return FALSE;
 	}
@@ -715,9 +721,9 @@ class CMyWizard : public CWizard
 	    ZeroMemory( &pic, sizeof(pic) );
 
 	    // Start X server process
-#ifdef _DEBUG
-	    printf("Server: %s\n", buffer.c_str());
-#endif
+            if (debug)
+              printf("Server: %s\n", buffer.c_str());
+
 	    if( !CreateProcess( NULL, (CHAR*)buffer.c_str(), NULL, NULL,
                         FALSE, 0, NULL, NULL, &si, &pi ))
 		throw win32_error("CreateProcess failed");
@@ -737,9 +743,9 @@ class CMyWizard : public CWizard
 		    throw std::runtime_error("Connection to server failed");
                 }
 
-#ifdef _DEBUG
-		printf("Client: %s\n", client.c_str());
-#endif
+                if (debug)
+                  printf("Client: %s\n", client.c_str());
+
                 // Hide console window, unless showconsole is true
 		sic.dwFlags = STARTF_USESHOWWINDOW;
 		sic.wShowWindow = SW_HIDE;
@@ -760,22 +766,29 @@ class CMyWizard : public CWizard
 	    // Wait until any child process exits.
 	    WaitForMultipleObjects(hcount, handles, FALSE, INFINITE);
 
-#ifdef _DEBUG
-	    printf("killing process!\n");
-#endif
             // Check if X server is still running, but only when we started a local program
             if (config.local)
             {
+#ifdef _DEBUG
+	    printf("killing process\n");
+#endif
+
 	    DWORD exitcode;
 	    GetExitCodeProcess(pi.hProcess, &exitcode);
 	    unsigned counter = 0;
 	    while (exitcode == STILL_ACTIVE)
 	    {
 		if (++counter > 10)
+                  {
+                    if (debug)
+                      printf("X server didn't stop after WM_ENDSESSION, force terminating process\n");
+
 		    TerminateProcess(pi.hProcess, (DWORD)-1);
+                  }
 		else
 		    // Shutdown X server (the soft way!)
 		    EnumThreadWindows(pi.dwThreadId, KillWindowsProc, 0);
+
 		Sleep(500);
 		GetExitCodeProcess(pi.hProcess, &exitcode);
 	    }
@@ -805,6 +818,11 @@ int main(int argc, char **argv)
 		continue;
 
 	    std::string arg(argv[i]);
+            if (arg == "-debug")
+              {
+                debug = true;
+                continue;
+              }
 	    if (arg == "-load" && i + 1 < argc)
 	    {
 		i++;
