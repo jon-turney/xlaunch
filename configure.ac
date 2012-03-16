@@ -35,7 +35,7 @@ AC_ARG_WITH([htmlhelp-path],
   [AS_HELP_STRING([--with-htmlhelp-path],
     [location of the HtmlHelp SDK])],
   [htmlhelp_sdk="$withval"],
-  [htmlhelp_sdk="/cygdrive/c/Program Files/HTML Help Workshop/"])
+  [htmlhelp_sdk=`cygpath -F 38`"/HTML Help Workshop/"])
 
 # autoconf and spaces in paths just don't mix
 rm -f /tmp/HtmlHelpWorkshop
