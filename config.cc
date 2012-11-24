@@ -95,6 +95,7 @@ void CConfig::Save(const char *filename)
     setAttribute(root, "XDMCPTerminate", xdmcpterminate?"True":"False");
     setAttribute(root, "SSHKeyChain", keychain?"True":"False");
     setAttribute(root, "SSHTerminal", terminal?"True":"False");
+    setAttribute(root, "ExtraSSH", extra_ssh.c_str());
 
     xmlSaveFormatFileEnc(filename, doc, "UTF-8", 1);
 
@@ -187,6 +188,7 @@ void CConfig::Load(const char *filename)
     getAttributeBool(root, "XDMCPTerminate", xdmcpterminate);
     getAttributeBool(root, "SSHKeyChain", keychain);
     getAttributeBool(root, "SSHTerminal", terminal);
+    getAttribute(root, "ExtraSSH", extra_ssh);
 
     /*free the document */
     xmlFreeDoc(doc);

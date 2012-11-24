@@ -186,6 +186,10 @@ class CMyWizard : public CWizard
                           config.terminal = true;
                         else
                           config.terminal = false;
+
+			GetDlgItemText(hwndDlg, IDC_CLIENT_PROTOCOL_EXTRA_PARAMS, buffer, 512);
+			buffer[511] = 0;
+			config.extra_ssh = buffer;
 		    }
                     // Check for valid input
 		    if ((!config.local && (config.host.empty() || config.remoteprogram.empty())) || config.localprogram.empty())
@@ -363,6 +367,8 @@ class CMyWizard : public CWizard
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_REMOTEPROGRAM_DESC), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_SSH_TERMINAL), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_SSH_KEYCHAIN), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROTOCOL_EXTRA_PARAMS_DESC), state);
+	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROTOCOL_EXTRA_PARAMS), state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM), !state);
 	    EnableWindow(GetDlgItem(hwndDlg, IDC_CLIENT_PROGRAM_DESC), !state);
 	}
@@ -514,6 +520,7 @@ class CMyWizard : public CWizard
 			    SetDlgItemText(hwndDlg, IDC_CLIENT_HOST, config.host.c_str());
 			    CheckDlgButton(hwndDlg, IDC_CLIENT_SSH_KEYCHAIN, config.keychain?BST_CHECKED:BST_UNCHECKED);
 			    CheckDlgButton(hwndDlg, IDC_CLIENT_SSH_TERMINAL, config.terminal?BST_CHECKED:BST_UNCHECKED);
+                            SetDlgItemText(hwndDlg, IDC_CLIENT_PROTOCOL_EXTRA_PARAMS, config.extra_ssh.c_str());
 			    break;
 			case IDD_XDMCP:
 			    psp->dwFlags |= PSP_HASHELP;
@@ -672,8 +679,8 @@ class CMyWizard : public CWizard
 
                     if (config.protocol == "ssh")
                       {
-                        snprintf(cmdline,512,"ssh -Y %s %s",
-                                 host.c_str(),config.remoteprogram.c_str());
+                        snprintf(cmdline,512,"ssh -Y %s %s %s",
+                                 host.c_str(), config.extra_ssh.c_str(), config.remoteprogram.c_str());
                         client = cmdline;
 
                         if (config.keychain)

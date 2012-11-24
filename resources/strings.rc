@@ -51,6 +51,8 @@
 #define STR_CLIENT_KEYCHAIN         "Use keychain to contact ssh-agent"
 #define STR_CLIENT_TERMINAL         "Prompt for ssh password/passphrase"
 
+#define STR_CLIENT_PROTOCOL_EXTRA_PARAMS_DESC "Additional parameters for ssh"
+
 #define STR_CAPTION_XDMCP           "XDMCP settings"
 #define STR_XDMCP_QUERY             "Connect to host"
 #define STR_XDMCP_INDIRECT          "Use indirect connect"
