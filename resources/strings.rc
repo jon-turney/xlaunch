@@ -95,6 +95,8 @@
 #define STR_SAVE_FILETITLE          "Filename"
 #define STR_SAVE_FILTER             "Xlaunch Files (*.xlaunch)%*.xlaunch%%"
 
+#define STR_CAPTION_ABOUT           "About Xlaunch"
+
 STRINGTABLE
 BEGIN
     IDS_DISPLAY_TITLE       STR_DISPLAY_TITLE

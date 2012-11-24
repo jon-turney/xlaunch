@@ -20,7 +20,7 @@ xlaunch_SOURCES = \
 	resources/resources.rc
 
 .rc.o:
-	$(AM_V_GEN)$(WINDRES) --use-temp-file -i $< --input-format=rc -o $@ -O coff -I$(top_srcdir)
+	$(AM_V_GEN)$(WINDRES) --use-temp-file -i $< --input-format=rc -o $@ -O coff -I$(top_srcdir) -DPACKAGE_NAME=\"@PACKAGE_NAME@\" -DPACKAGE_VERSION=\"@PACKAGE_VERSION@\"
 
 RESOURCES_IMAGES = \
 	resources/multiwindow.bmp \

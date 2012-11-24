@@ -34,6 +34,7 @@
 #define IDD_XDMCP               105
 #define IDD_FONTPATH            106
 #define IDD_EXTRA               107
+#define IDD_ABOUT               108
 
 #define IDC_MULTIWINDOW         200
 #define IDC_WINDOWED            201
@@ -109,3 +110,5 @@
 
 #define IDI_XLAUNCH		400
 #define IDI_XLAUNCH_DOCUMENT	401
+
+#define IDM_ABOUTBOX 0x2000

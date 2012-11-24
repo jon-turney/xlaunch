@@ -109,6 +109,12 @@ int CWizard::ShowModal()
     return ret;
 }
 
+/*
+   there seems to be no way to get some extra data down to the PSCB_INITIALIZED
+   callback, so use a static (terrible!)
+*/
+static CWizard *thisWizard;
+
 static int CALLBACK
 PropSheetProc(HWND hwndDlg, UINT uMsg, LPARAM lParam)
 {
@@ -118,6 +124,15 @@ PropSheetProc(HWND hwndDlg, UINT uMsg, LPARAM lParam)
       {
         /* PSH_USEICONID only sets the small icon, so we must set the big icon ourselves */
         SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_XLAUNCH)));
+
+        /* Subclass the standard dialog wndproc */
+        thisWizard->SetHandle(hwndDlg);
+        thisWizard->Subclass();
+
+        /* Add "About..." item to the system menu */
+        HMENU sysMenu = GetSystemMenu(hwndDlg, FALSE);
+        AppendMenu(sysMenu, MF_SEPARATOR, 0, 0);
+        AppendMenu(sysMenu, MF_ENABLED | MF_STRING, IDM_ABOUTBOX, "About...");
         return TRUE;
       }
     }
@@ -156,6 +171,8 @@ void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
     psh.nStartPage = 0;
     psh.phpage = phpage;
     psh.pfnCallback = PropSheetProc;
+
+    thisWizard = this;
 }
 
 DWORD CWizard::PageID(unsigned index)
@@ -245,7 +262,6 @@ INT_PTR CWizard::PageDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     return DlgDispatch(hwndDlg, uMsg, wParam, lParam);
 }
 
-
 INT_PTR CALLBACK CWizard::WizardDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     MessageDebug::debug(hwndDlg, uMsg, wParam, lParam, __FUNCTION__);
@@ -261,4 +277,55 @@ INT_PTR CALLBACK CWizard::WizardDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wPara
     if (wizard != NULL)
         return wizard->PageDispatch(hwndDlg, uMsg, wParam, lParam, psp);
     return FALSE;
+}
+
+static INT_PTR CALLBACK
+AboutDlgProc(HWND hwndDialog, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+      {
+      case WM_INITDIALOG:
+        {
+          HICON hIcon;
+
+          /* Set Window not to show in the task bar */
+          SetWindowLongPtr(hwndDialog, GWL_EXSTYLE,
+                           GetWindowLongPtr(hwndDialog, GWL_EXSTYLE) & ~WS_EX_APPWINDOW);
+
+          /* Set icon */
+          hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_XLAUNCH));
+          PostMessage(hwndDialog, WM_SETICON, ICON_BIG, (LPARAM) hIcon);
+
+          return TRUE;
+        }
+
+      case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK)
+          {
+            EndDialog(hwndDialog, 0);
+            return TRUE;
+          }
+      case WM_CLOSE:
+        EndDialog(hwndDialog, 0);
+        return TRUE;
+      }
+
+    return FALSE;
+}
+
+LRESULT CWizard::Dispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    MessageDebug::debug(hwndDlg, uMsg, wParam, lParam, __FUNCTION__);
+
+    switch (uMsg)
+      {
+      case WM_SYSCOMMAND:
+        if (LOWORD(wParam & 0xfff0) == IDM_ABOUTBOX)
+          {
+            DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), hwndDlg, AboutDlgProc);
+            return 0;
+          }
+      }
+
+    return CBaseDialog::Dispatch(hwndDlg, uMsg, wParam, lParam);
 }

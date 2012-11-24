@@ -98,6 +98,16 @@ void CWindow::Create()
     if (hwnd == NULL)
         throw win32_error("Could not create window");
 
+    Subclass();
+}
+
+void CWindow::SetHandle(HWND hwnd_)
+{
+  hwnd = hwnd_;
+}
+
+void CWindow::Subclass()
+{
     // Reset the error code
     DWORD err = 0;
     SetLastError(err);

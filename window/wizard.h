@@ -40,6 +40,7 @@ class CWizard : public CBaseDialog
     protected:
         virtual HWND CreateWindowHandle();
         static INT_PTR CALLBACK WizardDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+        virtual LRESULT Dispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
         virtual INT_PTR DlgDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
         virtual INT_PTR PageDispatch(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, PROPSHEETPAGE *psp);
         virtual unsigned PageIndex(PROPSHEETPAGE *psp);

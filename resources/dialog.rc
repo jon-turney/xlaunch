@@ -23,6 +23,7 @@
  * holders shall not be used in advertising or otherwise to promote the sale,
  * use or other dealings in this Software without prior written authorization.
  */
+
 #include <windows.h>
 #include "resources.h"
 
@@ -129,4 +130,15 @@ BEGIN
     LTEXT           STR_FINISH_DESC,IDC_FINISH_DESC,7,14,300,28
     LTEXT           STR_FINISH_SAVE_DESC,IDC_FINISH_SAVE_DESC,7,56,300,12
     PUSHBUTTON      STR_FINISH_SAVE,IDC_FINISH_SAVE,7,68,75,14
+END
+
+IDD_ABOUT DIALOGEX 0, 0, 260, 70
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION STR_CAPTION_ABOUT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+  CONTROL               IDI_XLAUNCH, IDC_STATIC, "Static", SS_ICON, 8, 8, 32, 32
+  LTEXT                 PACKAGE_NAME, IDC_STATIC, 36, 8, 220, 8
+  LTEXT                 PACKAGE_VERSION, IDC_STATIC, 36, 18, 220, 8
+  DEFPUSHBUTTON         "&OK", IDOK, 105, 50, 50, 15
 END

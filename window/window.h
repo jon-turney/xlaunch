@@ -105,9 +105,11 @@ class CWindow
         void SetExStyle(DWORD exstyle);
         DWORD GetExStyle() { return exstyle; };
 
+        void SetHandle(HWND hwnd);
         HWND GetHandle();
         void SetParent(CWindow *window);
 
+        void Subclass(void);
         virtual LRESULT Dispatch(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
