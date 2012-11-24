@@ -33,9 +33,9 @@
 
 #define STR_CAPTION_CLIENTS         "Session type"
 #define STR_CLIENT_NONE             "Start no client"
-#define STR_CLIENT_NONE_DESC		"This will just start the X server. You will be able to start local clients later."
+#define STR_CLIENT_NONE_DESC		"This will just start the X server. You will be able to start clients later."
 #define STR_CLIENT					"Start a program"
-#define STR_CLIENT_DESC				"This will start a local or remote program which will connect to the X server. You will be able to start local clients later too. Remote programs are started using SSH."
+#define STR_CLIENT_DESC				"This will start a local or remote program which will connect to the X server. You will be able to start clients later too. Remote programs are started using SSH."
 #define STR_XDMCP					"Open session via XDMCP"
 #define STR_XDMCP_DESC				"This will start a remote XDMCP session. Starting local clients later is limited. This option is not available with the ""Multiple windows"" mode."
 
@@ -63,9 +63,9 @@
 #define STR_CAPTION_EXTRA           "Extra settings"
 #define STR_CLIPBOARD               "Clipboard"
 #define STR_CLIPBOARD_DESC          "Start the integrated clipboard manager"
-#define STR_WGL                     "Native opengl"
-#define STR_WGL_DESC                "Use the native windows opengl library (wgl). Make sure to export the LIBGL_ALWAYS_INDIRECT environment variable."
-#define STR_DISABLEAC               "Disable access control"
+#define STR_WGL                     "Native OpenGL"
+#define STR_WGL_DESC                "Use the native windows OpenGL library (WGL). Make sure to export the LIBGL_ALWAYS_INDIRECT environment variable."
+#define STR_DISABLEAC               "Disable access control (Not recommended)"
 #define STR_DISABLEAC_DESC          "Use this when you want the X server to accept connections from all clients."
 #define STR_EXTRA_PARAMS_DESC       "Additional parameters for X server"
 

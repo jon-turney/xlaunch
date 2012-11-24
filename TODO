@@ -1,8 +1,6 @@
 TODO
 ====
 
-Add missing documentation to htmlhelp for new settings: WGL, rsh
-
 On cygwin, we should probably just run startx, rather than running the stuff ourselves?
 Rrunning client separately ourself and then trying to kill server when client exists is
 problematic, it means the server must be our direct child so we know process id, but that
@@ -19,3 +17,5 @@ XDMCP finder?
 automatic display number allocation
 
 maintain history lists of remote hosts, commands run
+
+Update cygwin-x-doc to mention xlaunch

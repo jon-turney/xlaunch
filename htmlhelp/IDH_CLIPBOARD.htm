@@ -11,12 +11,17 @@
 <p style="clear: both;">
 <div id="content" lang="en" dir="ltr">
 <h2><a name="1"></a>Additional parameters</h2>
-This is where the more obscure settings can be made. If in doubt enter nothing.
+This is where the more obscure settings can be made. If in doubt, use the default settings.
 <h3><a name="2"></a>Clipboard</h3>
 Enables the integration between the X clipboard and Windows clipboard. This is enabled by default.
-<h3><a name="3"></a>No Access Control</h3>
+<h3><a name="3"></a>Native OpenGL</h3>
+If possible, use the native Windows OpenGL interface for hardware accelerated OpenGL rendering.
+Currently, this is only possible in multiple window mode.
+When this option is disabled, OpenGL will use software rendering.
+This is enabled by default.
+<h3><a name="4"></a>No Access Control</h3>
 Turns off server access control. Available as a debugging aid when not running SSH X11 forwarding or XDMCP.
-<h3><a name="4"></a>Additional parameters for the X server</h3>
+<h3><a name="5"></a>Additional parameters for the X server</h3>
 Enter all other command line parameters needed by you for the X server. If unsure enter nothing.<p>
 For a list of parameters see the <a class="external" href="http://x.cygwin.com/docs/man1/XWin.1.html"><img src="moin-www.png" alt="[WWW]" height="11" width="11">XWin man page</a>.
 <p>

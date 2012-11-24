@@ -19,7 +19,9 @@ Enables XDMCP and sends <i>Query</i> packets to the specified host.<p>
 Enables XDMCP and sends <i>IndirectQuery</i> packets to the specified host. This host presents a chooser box of several hosts or sends <i>ForwardQuery</i> to another host depending on how it's X Display Manager is configured (via Xaccess file entries).
 <h3><a name="5"></a>Search for hosts (broadcast)</h3>
 Enables XDMCP and broadcasts <i>BroadcastQuery</i> packets to the network. The first responding display manager will automatically be chosen for the session.
-<h3><a name="6"></a>XDMCP remote settings</h3>
+<h3><a name="6"></a>Terminate on server reset</h3>
+Shut down the X server after logging out of the XDMCP server, rather than returning to it's login screen.
+<h3><a name="7"></a>XDMCP remote settings</h3>
 A quick guide to setting insecure XDMCP mode on a remote machine running kdm, gdm, xdm or wdm...<p>
 On the remote *nix machine edit the following files, restart the X Display Manager.
 <ul><li>
@@ -40,7 +42,7 @@ or for a xdm style configuration
   <i>to</i>
 !DisplayManager.requestPort:	0
 </pre></li></ul>
-<h3><a name="7"></a>Troubleshooting XDMCP</h3>
+<h3><a name="8"></a>Troubleshooting XDMCP</h3>
 If you are having problems use Wireshark or equivalent to monitor UDP traffic on the remote host and look for the sequence <i>Query</i> 177/UDP, <i>Willing</i> x/UDP, <i>Request</i> 177/UDP, <i>Accept</i> x/UDP, <i>Manage</i> 177/UDP and see where it stops. If it gets through the sequence then test with local and remote <b>xeyes</b> in multiwindow mode, because the Display Manager acts just like an X client from then on in to provide its login window.
 </div>
 </body>

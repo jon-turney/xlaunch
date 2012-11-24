@@ -25,7 +25,7 @@ If the \fB-run\fP option is used, \fBxlaunch\fP will load the
 \fBXwin\fP server configuration from that file, and then run \fBXwin\fP
 using that configuration, and any clients specified by the configuration.
 If the configuration specifies a local client to run, \fBxlaunch\fP
-will wait until that clients exits before exiting.
+will wait until that client exits before exiting.
 .PP
 \fBxlaunch\fP is designed to be associated with the .xlaunch filename
 extension by the Windows shell, so that the Edit and Open verbs use the
