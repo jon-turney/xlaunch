@@ -107,6 +107,12 @@
 #define IDS_SAVE_TITLE                320
 #define IDS_SAVE_FILETITLE            321
 #define IDS_SAVE_FILTER               322
+#define IDS_DISPLAY_CAPTION           323
+#define IDS_CLIENTS_CAPTION           324
+#define IDS_PROGRAM_CAPTION           325
+#define IDS_XDMCP_CAPTION             326
+#define IDS_EXTRA_CAPTION             327
+#define IDS_FINISH_CAPTION            328
 
 #define IDI_XLAUNCH		400
 #define IDI_XLAUNCH_DOCUMENT	401

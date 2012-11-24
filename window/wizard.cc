@@ -55,7 +55,25 @@ void CWizard::AddPage(const char *page, HINSTANCE instance)
     AddPage(psp);
 }
 
-void CWizard::AddPage(DWORD id, DWORD title, DWORD subtitle, HINSTANCE instance)
+#define countof(x) (sizeof(x)/sizeof(x[0]))
+
+static const char *
+LoadStringFromResource(UINT id)
+{
+  static char szBuffer[256];
+  int nCount = countof(szBuffer);
+  int nLen = LoadString(GetModuleHandle(NULL), id, szBuffer, nCount);
+
+  // XXX: if nLen is >= nCount-1, we should try again with a larger buffer,
+  // as we can't be sure we got the whole string
+
+  if (nLen > 0)
+      return szBuffer;
+
+  return NULL;
+}
+
+void CWizard::AddPage(DWORD id, DWORD caption, DWORD title, DWORD subtitle, HINSTANCE instance)
 {
     PROPSHEETPAGE psp;
     if (instance == NULL)
@@ -76,6 +94,19 @@ void CWizard::AddPage(DWORD id, DWORD title, DWORD subtitle, HINSTANCE instance)
         psp.pszHeaderSubTitle = MAKEINTRESOURCE(subtitle);
     }
 #endif
+    if (caption != 0)
+    {
+        static const char *prefix = "XLaunch - ";
+        psp.dwFlags |= PSP_USETITLE;
+
+        const char *szCaption = LoadStringFromResource(caption);
+        char *szAugmentedCaption = (char *)malloc(strlen(szCaption) +  strlen(prefix) + 1);
+
+        strcpy(szAugmentedCaption, prefix);
+        strcat(szAugmentedCaption, szCaption);
+
+        psp.pszTitle = szAugmentedCaption;
+    }
 
     psp.hInstance = instance;
     psp.pszTemplate = MAKEINTRESOURCE(id);
@@ -166,7 +197,7 @@ void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
     psh.hwndParent = NULL;
     psh.hInstance = GetModuleHandle(NULL);
     psh.pszIcon = MAKEINTRESOURCE(IDI_XLAUNCH);
-    psh.pszCaption = (LPSTR) "Cell Properties";
+    psh.pszCaption = (LPSTR) "XLaunch";
     psh.nPages = pages.size();
     psh.nStartPage = 0;
     psh.phpage = phpage;

@@ -10,8 +10,6 @@ Test what happens with other xlaunch's XML, if they contain attributes we don't 
 
 Rather than a fixed list of Xsessions, actually list what is installed
 
-Title bar should mention Xlaunch, otherwise it can be hard to identify xlaunch windows on taskbar?
-
 XDMCP finder?
 
 automatic display number allocation

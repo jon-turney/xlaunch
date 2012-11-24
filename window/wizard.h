@@ -55,7 +55,7 @@ class CWizard : public CBaseDialog
         CWizard();
         void AddPage(const PROPSHEETPAGE &page);
         void AddPage(const char *page, HINSTANCE instance = NULL);
-        void AddPage(DWORD id, DWORD title, DWORD subtitle, HINSTANCE instance = NULL);
+        void AddPage(DWORD id, DWORD caption, DWORD title, DWORD subtitle, HINSTANCE instance = NULL);
         virtual int ShowModal();
 };
 #endif
