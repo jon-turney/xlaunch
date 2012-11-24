@@ -6,6 +6,8 @@ test -z "$srcdir" && srcdir=.
 ORIGDIR=`pwd`
 cd $srcdir
 
+git describe >version
+
 autoreconf --force -v --install || exit 1
 cd $ORIGDIR || exit $?
 

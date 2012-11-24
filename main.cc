@@ -804,6 +804,20 @@ class CMyWizard : public CWizard
 	}
 };
 
+void usage(void)
+{
+  printf("Usage: xlaunch [OPTION]...\n");
+  printf("GUI tool for configuring and starting XWin\n");
+  printf("\n");
+  printf("  -debug         enable debug output\n");
+  printf("  -load filename load configuration from file\n");
+  printf("  -run filename  load and run configuration from file\n");
+  printf("  -help          display this help and exit\n");
+  printf("  -version       output version information and exit\n");
+  printf("\n");
+  printf("Report xlaunch bugs to " PACKAGE_BUGREPORT "\n");
+}
+
 int main(int argc, char **argv)
 {
     try {
@@ -818,24 +832,31 @@ int main(int argc, char **argv)
 		continue;
 
 	    std::string arg(argv[i]);
-            if (arg == "-debug")
+            if (arg == "-help")
+              {
+                usage();
+                return 0;
+              }
+            else if (arg == "-version")
+              {
+                printf(PACKAGE_STRING);
+                return 0;
+              }
+            else if (arg == "-debug")
               {
                 debug = true;
-                continue;
               }
-	    if (arg == "-load" && i + 1 < argc)
-	    {
+            else if (arg == "-load" && i + 1 < argc)
+              {
 		i++;
 		dialog.LoadConfig(argv[i]);
-		continue;
-	    }
-	    if (arg == "-run" && i + 1 < argc)
-	    {
+              }
+            else if (arg == "-run" && i + 1 < argc)
+              {
 		i++;
 		dialog.LoadConfig(argv[i]);
 		skip_wizard = true;
-		continue;
-	    }
+              }
 	}
 
 	int ret = 0;

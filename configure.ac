@@ -18,7 +18,7 @@ dnl LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 dnl FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 dnl DEALINGS IN THE SOFTWARE.
 
-AC_INIT([xlaunch], [0.1])
+AC_INIT([xlaunch], m4_esyscmd([cat version | tr -d '\n']), cygwin-xfree@cygwin.com)
 AM_INIT_AUTOMAKE([foreign no-define silent-rules dist-bzip2 no-dist-gzip])
 AM_SILENT_RULES([yes])
 

@@ -45,6 +45,7 @@ EXTRA_DIST = \
 	COPYING \
 	config.h \
 	file.h \
+	version \
 	resources/resources.h \
 	resources/resources.rc \
 	XLaunch.exe.manifest \
