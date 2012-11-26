@@ -49,6 +49,7 @@ struct CConfig
     bool keychain;
     bool terminal;
     std::string extra_ssh;
+    bool display_auto;
     CConfig() : window(MultiWindow),
                 client(NoClient),
                 local(true),
@@ -71,7 +72,8 @@ struct CConfig
                 extra_params(),
                 keychain(false),
                 terminal(true),
-                extra_ssh()
+                extra_ssh(),
+                display_auto(false)
     {
     };
     void Load(const char * filename);

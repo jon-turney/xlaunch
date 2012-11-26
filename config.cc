@@ -79,7 +79,7 @@ void CConfig::Save(const char *filename)
 	    break;
     }
     setAttribute(root, "LocalClient", local?"True":"False");
-    setAttribute(root, "Display", display.c_str());
+    setAttribute(root, "Display", display_auto?"":display.c_str());
     setAttribute(root, "RemoteProtocol", protocol.c_str());
     setAttribute(root, "LocalProgram", localprogram.c_str());
     setAttribute(root, "RemoteProgram", remoteprogram.c_str());
@@ -189,6 +189,8 @@ void CConfig::Load(const char *filename)
     getAttributeBool(root, "SSHKeyChain", keychain);
     getAttributeBool(root, "SSHTerminal", terminal);
     getAttribute(root, "ExtraSSH", extra_ssh);
+
+    display_auto = display.empty();
 
     /*free the document */
     xmlFreeDoc(doc);

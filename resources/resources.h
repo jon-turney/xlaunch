@@ -46,6 +46,7 @@
 #define IDC_NODECORATION_IMG    207
 #define IDC_DISPLAY             208
 #define IDC_DISPLAY_DESC        209
+#define IDC_DISPLAY_AUTO        199
 
 #define IDC_CLIENT_NONE         210
 #define IDC_XDMCP               211

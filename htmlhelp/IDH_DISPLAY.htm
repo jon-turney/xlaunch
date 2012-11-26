@@ -27,11 +27,15 @@ This mode is like single window mode except that the X server window takes the f
 <h3><a name="5"></a>One window without titlebar</h3>
 This mode is like single window mode except that the X server window does not have a title bar or border, thus maximizing the amount of space available for X windows within the X server window. This mode requires an external window manager.
 <h3><a name="6"></a>Display number</h3>
-The display (or X Window server) number (default 0).<p>
-The phrase <i>display</i> is usually used to refer to a collection of physical monitors that share a common keyboard and mouse.<p>
+The X Window server display number.  The default is 0.<p>
+The phrase <i>display</i> is refers to a collection of physical monitors that share a common keyboard and mouse.<p>
+<h3><a name="7"></a>Auto-allocate display number</h3>
+If multiple X servers are to run simultaneously on the same host, each must have a unique display-number.
+This option enables automatically allocating an unused display number.
+<h2><a name="8"></a>X clients and servers</h2>
+At first glance the terms client and server in an X Window system appear backwards. Think of the server as the end providing the service. The service provided by X is access to the window, keyboard and mouse.<p>
 On starting, the server creates a TCP end point and listens on port 6000+<i>n</i>, where <i>n</i> is the display number. When a client is started on another host, it creates a TCP end point and connects to port 6000+<i>n</i> on the server. Each client gets its own TCP connection to the server.
-<h2><a name="7"></a>X clients and servers</h2>
-At first glance the terms client and server in an X Window system appear backwards. Think of the server as the end providing the service. The service provided by X is access to the window, keyboard and mouse.
+
 </div>
 </body>
 </html>

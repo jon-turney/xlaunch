@@ -115,8 +115,10 @@ class CMyWizard : public CWizard
 			buffer[511] = 0;
 			config.display = buffer;
                     }
+                    config.display_auto = IsDlgButtonChecked(hwndDlg, IDC_DISPLAY_AUTO);
+
                     // Check for valid input
-                    if (config.display.empty())
+                    if (config.display.empty() && !config.display_auto)
                       {
 			MessageBox(hwndDlg,"Please fill in a display number.","Error",MB_OK);
 			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
@@ -482,8 +484,9 @@ class CMyWizard : public CWizard
 				    CheckRadioButton(hwndDlg, IDC_MULTIWINDOW, IDC_NODECORATION, IDC_NODECORATION);
 				    break;
 			    }
-                            // Set display number
+                            // Set display number and auto-allocate checkbox
                             SetDlgItemText(hwndDlg, IDC_DISPLAY, config.display.c_str());
+                            EnableWindow(GetDlgItem(hwndDlg, IDC_DISPLAY), !config.display_auto);
                             break;
                         case IDD_CLIENTS:
 			    psp->dwFlags |= PSP_HASHELP;
@@ -557,6 +560,8 @@ class CMyWizard : public CWizard
                             SetFocus(GetDlgItem(hwndDlg, LOWORD(wParam)-4));
                             break;
                         // Disable unavailable controls
+                        case IDC_DISPLAY_AUTO:
+                            EnableWindow(GetDlgItem(hwndDlg, IDC_DISPLAY), !IsDlgButtonChecked(hwndDlg, IDC_DISPLAY_AUTO));
                         case IDC_CLIENT_REMOTE:
                         case IDC_CLIENT_LOCAL:
 			    EnableRemoteProgramGroup(hwndDlg, LOWORD(wParam) == IDC_CLIENT_REMOTE);
@@ -603,10 +608,26 @@ class CMyWizard : public CWizard
 	    std::string buffer;
 	    std::string client;
 	    BOOL showconsole = FALSE;
+	    int filedes[2];
 
             // Construct display strings
-	    std::string display_id = ":" + config.display;
-	    std::string display = "localhost" + display_id + ".0";
+            std::string display_id;
+            if (!config.display_auto)
+               display_id = ":" + config.display;
+            else
+              {
+                if (pipe(filedes) == 0)
+                  {
+                    char displayfd_write_buf[256];
+                    sprintf(displayfd_write_buf, "%d", filedes[1]);
+                    display_id = "-displayfd ";
+                    display_id += displayfd_write_buf;
+                  }
+                else
+                  {
+                    throw std::runtime_error("pipe() for -displayfd failed");
+                  }
+              }
 
             // Build X server commandline
 #if defined (__CYGWIN__)
@@ -738,6 +759,26 @@ class CMyWizard : public CWizard
 
 	    if (!client.empty())
 	    {
+                if (config.display_auto)
+                  {
+                    char displayfd_read_buf[256];
+
+                    // wait for the server to write the DISPLAY number to the displayfd pipe...
+                    int length = read(filedes[0], displayfd_read_buf, 255);
+
+                    if (length < 0)
+                      throw std::runtime_error("reading displayfd pipe failed");
+                    displayfd_read_buf[length] = '\0';
+
+                    if (debug)
+                      printf("Allocated display number: %s\n", displayfd_read_buf);
+
+                    display_id = ":";
+                    display_id += displayfd_read_buf;
+                  }
+
+                std::string display = "localhost" + display_id + ".0";
+
                 // Set DISPLAY variable
 		SetEnvironmentVariable("DISPLAY",display.c_str());
 

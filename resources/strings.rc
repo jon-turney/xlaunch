@@ -30,6 +30,7 @@
 #define STR_WINDOWED                "One window"
 #define STR_NODECORATION            "One window without titlebar"
 #define STR_DISPLAY_DESC            "Display number"
+#define STR_DISPLAY_AUTO_DESC       "auto-allocate"
 
 #define STR_CAPTION_CLIENTS         "Session type"
 #define STR_CLIENT_NONE             "Start no client"
