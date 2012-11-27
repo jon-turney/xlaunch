@@ -13,6 +13,7 @@ xlaunch_SOURCES = \
 	config_libxml2.cc \
 	file.cc \
 	main.cc \
+	startup.cc \
 	window/dialog.cc \
 	window/util.cc \
 	window/window.cc \
