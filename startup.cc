@@ -24,46 +24,162 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#include <windows.h>
 #include <stdio.h>
 #include <stdexcept>
 
 #include "config.h"
 #include "window/util.h"
 
+#include <errno.h>
+#include <sys/wait.h>
+
 #include <X11/Xlib.h>
 
 extern bool debug;
 
-/// @brief Send WM_ENDSESSION to all program windows.
-/// This will shutdown the started xserver
-BOOL CALLBACK KillWindowsProc(HWND hwnd, LPARAM lParam)
+static void
+Execute(const char *s)
 {
-    SendMessage(hwnd, WM_ENDSESSION, 0, 0);
-    return TRUE;
+  char *argv[4];
+
+  argv[0] = (char *)"sh";
+  argv[1] = (char *)"-c";
+  argv[2] = (char *) s;
+  argv[3] = NULL;
+
+  execv("/bin/sh", argv);
 }
 
-/// @brief Try to connect to server.
-/// Repeat until successful, server died or maximum number of retries
-/// reached.
-Display *WaitForServer(HANDLE serverProcess, std::string &display)
+/*
+ * return TRUE if we timeout waiting for pid to exit, FALSE otherwise.
+ */
+static Bool
+processTimeout(int serverpid, int timeout, const char *string)
 {
-  int     ncycles  = 120;         /* # of cycles to wait */
-  int     cycles;                 /* Wait cycle count */
-  Display *xd;
+    int i = 0, pidfound = -1;
+    static const char *laststring;
+    int status;
 
-  for (cycles = 0; cycles < ncycles; cycles++) {
-    if ((xd = XOpenDisplay(display.c_str()))) {
-      return xd;
+    for (;;) {
+        if ((pidfound = waitpid(serverpid, &status, WNOHANG)) == serverpid)
+            break;
+        if (timeout) {
+            if (i == 0 && string != laststring)
+                fprintf(stderr, "\r\nwaiting for %s ", string);
+            else
+                fprintf(stderr, ".");
+            fflush(stderr);
+            sleep(1);
+        }
+        if (++i > timeout)
+            break;
     }
-    else {
-      if (WaitForSingleObject(serverProcess, 1000) == WAIT_TIMEOUT)
-        continue;
-      else
+    if (i > 0) fputc('\n', stderr);     /* tidy up after message */
+    laststring = string;
+    return (serverpid != pidfound);
+}
+
+/*
+ *    waitforserver - wait for X server to start up
+ */
+static Bool
+waitforserver(int serverpid, const char *displayNum)
+{
+    int ncycles = 120;        /* # of cycles to wait */
+    int cycles;               /* Wait cycle count */
+    Display *xd = NULL;       /* server connection */
+
+    for (cycles = 0; cycles < ncycles; cycles++) {
+        if ((xd = XOpenDisplay(displayNum))) {
+            return(TRUE);
+        }
+        else {
+          if (!processTimeout(serverpid, 1, "X server to begin accepting connections"))
+              break;
+        }
+    }
+
+    fprintf(stderr, "giving up\n");
+
+    return(FALSE);
+}
+
+static int
+startServer(const char *server)
+{
+    sigset_t mask, old;
+
+    sigemptyset(&mask);
+    sigaddset(&mask, SIGUSR1);
+    sigprocmask(SIG_BLOCK, &mask, &old);
+
+    int serverpid = fork();
+
+    switch(serverpid) {
+    case 0:
+        /* Unblock */
+        sigprocmask(SIG_SETMASK, &old, NULL);
+
+        /*
+         * don't hang on read/write to control tty
+         */
+        signal(SIGTTIN, SIG_IGN);
+        signal(SIGTTOU, SIG_IGN);
+        /*
+         * ignore SIGUSR1 in child.  The server
+         * will notice this and send SIGUSR1 back
+         * at xinit when ready to accept connections
+         */
+        signal(SIGUSR1, SIG_IGN);
+        /*
+         * prevent server from getting sighup from vhangup()
+         * if client is xterm -L
+         */
+        setpgid(0,getpid());
+        Execute(server);
+
+        fprintf(stderr, "unable to run server \"%s\"\n", server);
+        exit(EXIT_FAILURE);
+
+        break;
+    case -1:
+        break;
+    default:
+        /*
+         * don't nice server
+         */
+        setpriority(PRIO_PROCESS, serverpid, -1);
+
+        /*
+         * check if serverpid is valid
+         */
+        errno = 0;
+        if(! processTimeout(serverpid, 0, "")) {
+            serverpid = -1;
+            break;
+        }
+
+        /*
+         * Wait for SIGUSR1 or 15 seconds for server to become ready
+         * to accept connections
+         *
+         * If your machine is substantially slower than 15 seconds,
+         * you can easily adjust this value.
+         */
+        alarm(15);
+        sigsuspend(&old);
+        alarm(0);
+        sigprocmask(SIG_SETMASK, &old, NULL);
+
         break;
     }
-  }
-  return NULL;
+
+    return(serverpid);
+}
+
+void
+shutdownServer()
+{
 }
 
 /// @brief Do the actual start of X server and clients
@@ -187,28 +303,11 @@ void StartUp(CConfig config)
       }
     }
 
-  // Prepare program startup
-  STARTUPINFO si, sic;
-  PROCESS_INFORMATION pi, pic;
-  HANDLE handles[2];
-  DWORD hcount = 0;
-  Display *dpy = NULL;
-
-  ZeroMemory( &si, sizeof(si) );
-  si.cb = sizeof(si);
-  ZeroMemory( &pi, sizeof(pi) );
-  ZeroMemory( &sic, sizeof(sic) );
-  sic.cb = sizeof(sic);
-  ZeroMemory( &pic, sizeof(pic) );
-
   // Start X server process
   if (debug)
     printf("Server: %s\n", buffer.c_str());
 
-  if( !CreateProcess( NULL, (CHAR*)buffer.c_str(), NULL, NULL,
-                      FALSE, 0, NULL, NULL, &si, &pi ))
-    throw win32_error("CreateProcess failed");
-  handles[hcount++] = pi.hProcess;
+  int serverpid = startServer(buffer.c_str());
 
   if (!client.empty())
     {
@@ -236,70 +335,49 @@ void StartUp(CConfig config)
       SetEnvironmentVariable("DISPLAY",display.c_str());
 
       // Wait for server to startup
-      dpy = WaitForServer(pi.hProcess, display);
-      if (dpy == NULL)
+      if (!waitforserver(serverpid, display.c_str()))
         {
-          while (hcount--)
-            TerminateProcess(handles[hcount], (DWORD)-1);
+          shutdownServer();
           throw std::runtime_error("Connection to server failed");
         }
 
       if (debug)
         printf("Client: %s\n", client.c_str());
 
+      // Prepare for client program startup
+      STARTUPINFO sic;
+      PROCESS_INFORMATION pic;
+      HANDLE handle;
+      ZeroMemory( &sic, sizeof(sic) );
+      sic.cb = sizeof(sic);
+      ZeroMemory( &pic, sizeof(pic) );
+
       // Hide console window, unless showconsole is true
       sic.dwFlags = STARTF_USESHOWWINDOW;
       sic.wShowWindow = SW_HIDE;
       if (showconsole) sic.wShowWindow = SW_NORMAL;
 
-      // Start the child process.
+      // Start the X client process
       if( !CreateProcess( NULL, (CHAR*)client.c_str(), NULL, NULL,
                           FALSE, 0, NULL, NULL, &sic, &pic ))
         {
           DWORD err = GetLastError();
-          while (hcount--)
-            TerminateProcess(handles[hcount], (DWORD)-1);
+          shutdownServer();
           throw win32_error("CreateProcess failed", err);
         }
-      handles[hcount++] = pic.hProcess;
-    }
+      handle = pic.hProcess;
 
-  // Wait until any child process exits.
-  WaitForMultipleObjects(hcount, handles, FALSE, INFINITE);
+      // Wait until client process exits.
+      WaitForMultipleObjects(1, &handle, FALSE, INFINITE);
+    }
 
   // Check if X server is still running, but only when we started a local program
   if (config.local)
     {
 #ifdef _DEBUG
-      printf("killing process\n");
+      printf("killing X server process\n");
 #endif
 
-      DWORD exitcode;
-      GetExitCodeProcess(pi.hProcess, &exitcode);
-      unsigned counter = 0;
-      while (exitcode == STILL_ACTIVE)
-        {
-          if (++counter > 10)
-            {
-              if (debug)
-                printf("X server didn't stop after WM_ENDSESSION, force terminating process\n");
-
-              TerminateProcess(pi.hProcess, (DWORD)-1);
-            }
-          else
-            // Shutdown X server (the soft way!)
-            EnumThreadWindows(pi.dwThreadId, KillWindowsProc, 0);
-
-          Sleep(500);
-          GetExitCodeProcess(pi.hProcess, &exitcode);
-        }
-      // Kill the client
-      TerminateProcess(pic.hProcess, (DWORD)-1);
+      shutdownServer();
     }
-
-  // Close process and thread handles.
-  CloseHandle( pi.hProcess );
-  CloseHandle( pi.hThread );
-  CloseHandle( pic.hProcess );
-  CloseHandle( pic.hThread );
 }
