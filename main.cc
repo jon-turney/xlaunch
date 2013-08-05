@@ -105,7 +105,7 @@ class CMyWizard : public CWizard
 			config.window = CConfig::Nodecoration;
 		    else
 		    {
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
 			return TRUE;
 		    }
                     // Get selected display number
@@ -119,27 +119,27 @@ class CMyWizard : public CWizard
                     if (config.display.empty())
                       {
 			MessageBox(hwndDlg,"Please fill in a display number.","Error",MB_OK);
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
                       }
                     else
-                        SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
+                        SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_CLIENTS);
 		    return TRUE;
 		case IDD_CLIENTS:
                     // Check for select client startup method
 		    if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT))
 		    {
 			config.client = CConfig::StartProgram;
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_PROGRAM);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_PROGRAM);
 		    } else if (IsDlgButtonChecked(hwndDlg, IDC_XDMCP))
 		    {
 			config.client = CConfig::XDMCP;
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_XDMCP);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_XDMCP);
 		    } else if (IsDlgButtonChecked(hwndDlg, IDC_CLIENT_NONE))
 		    {
 			config.client = CConfig::NoClient;
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_EXTRA);
 		    } else
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
 		    return TRUE;
 		case IDD_PROGRAM:
                     // Check whether local or remote client should be started
@@ -158,7 +158,7 @@ class CMyWizard : public CWizard
                       }
 		    else
 		    {
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
 			return TRUE;
 		    }
                     // Read program, user and host name
@@ -195,10 +195,10 @@ class CMyWizard : public CWizard
 		    if ((!config.local && (config.host.empty() || config.remoteprogram.empty())) || config.localprogram.empty())
                       {
 			MessageBox(hwndDlg,"Please fill in details of the program to start", "Error", MB_OK);
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
                       }
 		    else
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_EXTRA);
 		    return TRUE;
 		case IDD_XDMCP:
                     // Check for broadcast
@@ -208,7 +208,7 @@ class CMyWizard : public CWizard
 			config.broadcast = false;
 		    else
 		    {
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
 			return TRUE;
 		    }
                     // Check for indirect mode
@@ -225,9 +225,9 @@ class CMyWizard : public CWizard
 		    }
                     // Check for valid input
 		    if (!config.broadcast && config.xdmcp_host.empty())
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, -1);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, -1);
 		    else
-			SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_EXTRA);
+			SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_EXTRA);
                     if (IsDlgButtonChecked(hwndDlg, IDC_XDMCP_TERMINATE))
                         config.xdmcpterminate = true;
                     else
@@ -256,7 +256,7 @@ class CMyWizard : public CWizard
 			buffer[511] = 0;
 			config.extra_params = buffer;
 		    }
-                    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_FINISH);
+                    SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_FINISH);
                     return TRUE;
 		default:
 		    break;
@@ -286,19 +286,19 @@ class CMyWizard : public CWizard
 	    {
 		case IDD_PROGRAM:
 		case IDD_XDMCP:
-		    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
+		    SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_CLIENTS);
 		    return TRUE;
 		case IDD_EXTRA:
 		    switch (config.client)
 		    {
 			case CConfig::NoClient:
-			    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_CLIENTS);
+			    SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_CLIENTS);
 			    return TRUE;
 			case CConfig::StartProgram:
-			    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_PROGRAM);
+			    SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_PROGRAM);
 			    return TRUE;
 			case CConfig::XDMCP:
-			    SetWindowLong(hwndDlg, DWL_MSGRESULT, IDD_XDMCP);
+			    SetWindowLong(hwndDlg, DWLP_MSGRESULT, IDD_XDMCP);
 			    return TRUE;
 		    }
 		    break;

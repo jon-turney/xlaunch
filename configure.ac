@@ -31,11 +31,17 @@ AC_CHECK_TOOL(WINDRES, windres)
 
 PKG_CHECK_MODULES([LIBX11], [x11])
 
+# cygpath -F 42 silently fails on 32-bit Windows
+PFX86=`cygpath -F 42 2>/dev/null`
+if test -z "$PFX86" ; then
+   PFX86=`cygpath -F 38`
+fi
+
 AC_ARG_WITH([htmlhelp-path],
   [AS_HELP_STRING([--with-htmlhelp-path],
     [location of the HtmlHelp SDK])],
   [htmlhelp_sdk="$withval"],
-  [htmlhelp_sdk=`cygpath -F 38`"/HTML Help Workshop/"])
+  [htmlhelp_sdk="$PFX86/HTML Help Workshop/"])
 
 # autoconf and spaces in paths just don't mix
 rm -f /tmp/HtmlHelpWorkshop

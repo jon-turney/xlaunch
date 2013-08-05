@@ -31,7 +31,7 @@ xlaunch.chm: $(addprefix $(srcdir)/,$(xlaunch.chm_sources))
 	cat /dev/null >$(srcdir)/xlaunch.hhc
 	cd $(srcdir) && $(HHC) xlaunch.hhp || true
 	test -s $(srcdir)/xlaunch.chm || ( rm $(srcdir)/xlaunch.chm && false )
-	mv $(srcdir)/xlaunch.chm $(builddir)/xlaunch.chm
+	if [ "$(srcdir)" != "$(builddir)" ]; then mv $(srcdir)/xlaunch.chm $(builddir)/xlaunch.chm ; fi
 
 CLEANFILES = xlaunch.chm
 EXTRA_DIST = $(xlaunch.chm_sources)

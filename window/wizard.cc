@@ -209,7 +209,7 @@ void CWizard::PrepareSheetHeader(PROPSHEETHEADER &psh, BOOL modal)
 DWORD CWizard::PageID(unsigned index)
 {
     if (index < pages.size() && IS_INTRESOURCE(pages[index].pszTemplate))
-	return (DWORD)pages[index].pszTemplate;
+      return (DWORD)(INT_PTR)pages[index].pszTemplate;
     return (DWORD)-1;
 }
 
