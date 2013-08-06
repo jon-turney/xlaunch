@@ -26,7 +26,9 @@ AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging (default
                      [DEBUG=$enableval], [DEBUG=no])
 AM_CONDITIONAL(DEBUG, [test "x$DEBUG" = xyes])
 
+AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_RANLIB
 AC_CHECK_TOOL(WINDRES, windres)
 
 PKG_CHECK_MODULES([LIBX11], [x11])
@@ -48,20 +50,13 @@ rm -f /tmp/HtmlHelpWorkshop
 ln -sf "$htmlhelp_sdk" /tmp/HtmlHelpWorkshop
 htmlhelp_sdk=/tmp/HtmlHelpWorkshop
 
-HTMLHELP_CFLAGS="-I$htmlhelp_sdk/include"
-HTMLHELP_LDFLAGS="-L$htmlhelp_sdk/lib -lhtmlhelp"
-HHC="$htmlhelp_sdk/hhc"
-AC_SUBST([HTMLHELP_CFLAGS])
-AC_SUBST([HTMLHELP_LDFLAGS])
-AC_SUBST([HHC])
-
-# check for the existence of htmlhelp.h
-save_CFLAGS=$CFLAGS
-CFLAGS="$CFLAGS $HTMLHELP_CFLAGS"
-AC_CHECK_HEADER([htmlhelp.h], , [AC_MSG_ERROR([HtmlHelp SDK is required])] , [#include <windows.h>])
-CFLAGS=$save_CFLAGS
+# check for the existence of hhc.exe
+AC_PATH_PROG(HHC, hhc, , $htmlhelp_sdk)
+if test -z "$HHC" ; then
+  AC_MSG_ERROR([HtmlHelp SDK is required])
+fi
 
 PKG_CHECK_MODULES([LIBXML2], [libxml-2.0])
 
-AC_CONFIG_FILES([Makefile htmlhelp/Makefile man/Makefile])
+AC_CONFIG_FILES([Makefile htmlhelp/Makefile man/Makefile lib/Makefile])
 AC_OUTPUT

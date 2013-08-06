@@ -5,8 +5,8 @@ if DEBUG
 DEBUG_FLAGS=-D_DEBUG
 endif
 
-AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(HTMLHELP_CFLAGS) $(LIBXML2_CFLAGS) -DDOCDIR=\"`cygpath -m @docdir@`\"
-LDADD = -lcomctl32 $(LIBX11_LIBS) $(HTMLHELP_LDFLAGS) $(LIBXML2_LIBS)
+AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(LIBXML2_CFLAGS) -DDOCDIR=\"`cygpath -m @docdir@`\"
+LDADD = -lcomctl32 lib/libhtmlhelp.a $(LIBX11_LIBS) $(LIBXML2_LIBS)
 AM_LDFLAGS = -mwindows
 
 xlaunch_SOURCES = \
@@ -56,4 +56,4 @@ EXTRA_DIST = \
 	window/window.h \
 	window/wizard.h
 
-SUBDIRS = htmlhelp man
+SUBDIRS = htmlhelp man lib
