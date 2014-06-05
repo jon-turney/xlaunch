@@ -35,7 +35,7 @@ PKG_CHECK_MODULES([LIBX11], [x11])
 
 # cygpath -F 42 silently fails on 32-bit Windows
 PFX86=`cygpath -F 42 2>/dev/null`
-if test -z "$PFX86" ; then
+if ! test -d "$PFX86" ; then
    PFX86=`cygpath -F 38`
 fi
 
