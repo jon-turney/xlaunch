@@ -839,6 +839,12 @@ void usage(void)
 
 int main(int argc, char **argv)
 {
+    // It seems that HtmlHelp() may need to create a temporary file using
+    // GetTempPath().  Create a full Win32 environment, so that it can find a
+    // suitable location, rather than falling back to %WINDIR%, which will fail
+    // if we don't have Adminstrator privileges.
+    cygwin_internal(CW_SYNC_WINENV);
+
     try {
         InitCommonControls();
         CMyWizard dialog;
