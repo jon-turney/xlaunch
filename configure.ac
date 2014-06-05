@@ -19,7 +19,7 @@ dnl FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 dnl DEALINGS IN THE SOFTWARE.
 
 AC_INIT([xlaunch], m4_esyscmd([cat version | tr -d '\n']), cygwin-xfree@cygwin.com)
-AM_INIT_AUTOMAKE([foreign no-define silent-rules dist-bzip2 no-dist-gzip])
+AM_INIT_AUTOMAKE([foreign no-define silent-rules dist-bzip2 no-dist-gzip subdir-objects])
 AM_SILENT_RULES([yes])
 
 AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging (default: disabled)]),
