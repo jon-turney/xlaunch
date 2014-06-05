@@ -5,7 +5,7 @@ if DEBUG
 DEBUG_FLAGS=-D_DEBUG
 endif
 
-AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(LIBXML2_CFLAGS) -DDOCDIR=\"`cygpath -m @docdir@`\"
+AM_CXXFLAGS = $(DEBUG_FLAGS) -Wall $(LIBXML2_CFLAGS) -DDOCDIR=\"@docdir@\"
 LDADD = -lcomctl32 lib/libhtmlhelp.a $(LIBX11_LIBS) $(LIBXML2_LIBS)
 AM_LDFLAGS = -mwindows
 

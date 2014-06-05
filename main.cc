@@ -34,6 +34,7 @@
 #include <commctrl.h>
 #include <htmlhelp.h>
 #include <stdio.h>
+#include <sys/cygwin.h>
 #include <stdexcept>
 
 #include <X11/Xlib.h>
@@ -348,7 +349,18 @@ class CMyWizard : public CWizard
             else
               chmFile = DOCDIR "/xlaunch.chm";
 
-            HtmlHelp(hwndDlg, chmFile, HH_HELP_CONTEXT, 500 + offset);
+            // convert the .chm file path to it's Windows form before passing to
+            // HtmlHelp()
+            char *winPath = (char *)(cygwin_create_path(CCP_POSIX_TO_WIN_A | CCP_ABSOLUTE, chmFile));
+
+#ifdef _DEBUG
+            printf("chmfile %s = %s\n", chmFile, winPath);
+#endif
+
+            HtmlHelp(NULL, winPath, HH_HELP_CONTEXT, 500 + offset);
+
+            free(winPath);
+
 	}
 
     protected:
