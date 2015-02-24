@@ -618,7 +618,7 @@ class CMyWizard : public CWizard
 
             // Construct display strings
 	    std::string display_id = ":" + config.display;
-	    std::string display = "localhost" + display_id + ".0";
+	    std::string display = display_id + ".0";
 
             // Build X server commandline
 #if defined (__CYGWIN__)
