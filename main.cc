@@ -357,7 +357,7 @@ class CMyWizard : public CWizard
             printf("chmfile %s = %s\n", chmFile, winPath);
 #endif
 
-            HtmlHelp(NULL, winPath, HH_HELP_CONTEXT, 500 + offset);
+            HtmlHelp(hwndDlg, winPath, HH_HELP_CONTEXT, 500 + offset);
 
             free(winPath);
 
