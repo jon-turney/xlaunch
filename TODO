@@ -17,3 +17,6 @@ automatic display number allocation
 maintain history lists of remote hosts, commands run
 
 Update cygwin-x-doc to mention xlaunch
+
+Because now Xwin have -nolisten tcp option by default, a check box to set -listen tcp will be useful.
+In the same way, an option for -nohostintitle can be useful too.
