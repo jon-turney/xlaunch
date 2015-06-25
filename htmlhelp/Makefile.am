@@ -1,4 +1,3 @@
-
 doc_DATA = xlaunch.chm
 
 HTMLHELP_IMAGES = \
@@ -8,13 +7,13 @@ HTMLHELP_IMAGES = \
 HTMLHELP_TEXT = \
 	common.css \
 	screen.css \
-	IDH_AUTHORS.htm \
-	IDH_CLIENTS.htm \
-	IDH_CLIPBOARD.htm \
-	IDH_DISPLAY.htm \
-	IDH_FINISH.htm \
-	IDH_PROGRAM.htm \
-	IDH_XDMCP.htm
+	about.html \
+	session_type.html \
+	additional.html \
+	display.html \
+	finish.html \
+	program.html \
+	xdmcp.html
 
 xlaunch.chm_sources = \
 	$(HTMLHELP_IMAGES) \

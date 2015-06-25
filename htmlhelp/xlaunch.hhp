@@ -3,22 +3,31 @@ Auto TOC=9
 Compatibility=1.1 or later
 Compiled file=XLaunch.chm
 Contents file=XLaunch.hhc
-Default topic=IDH_DISPLAY.htm
+Default topic=index.html
 Display compile progress=Yes
 Enhanced decompilation=Yes
 Full-text search=Yes
 Language=0x809 English (United Kingdom)
 Title=XLaunch Wizard Help
 
-
 [FILES]
-IDH_DISPLAY.htm
-IDH_CLIENTS.htm
-IDH_PROGRAM.htm
-IDH_XDMCP.htm
-IDH_CLIPBOARD.htm
-IDH_FINISH.htm
-IDH_AUTHORS.htm
+index.html
+display.html
+session_type.html
+program.html
+xdmcp.html
+additional.html
+finish.html
+about.html
+
+[ALIAS]
+IDH_AUTHORS=about.html
+IDH_CLIENTS=session_type.html
+IDH_CLIPBOARD=additional.html
+IDH_DISPLAY=display.html
+IDH_FINISH=finish.html
+IDH_PROGAM=program.html
+IDH_XDMCP=xdmcp.html
 
 [MAP]
 #include "map.h"
