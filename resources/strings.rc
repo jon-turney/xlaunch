@@ -74,7 +74,7 @@
 #define STR_XDMCP_TERMINATE         "Terminate on server reset."
 
 #define STR_CAPTION_FINISH          "Finish configuration"
-#define STR_FINISH_DESC	            "Configuration is complete. Clish Finish to start the X server."
+#define STR_FINISH_DESC	            "Configuration is complete. Click Finish to start the X server."
 #define STR_FINISH_SAVE_DESC        "You may also save the configuration for later use."
 #define STR_FINISH_SAVE	            "Save configuration"
 
