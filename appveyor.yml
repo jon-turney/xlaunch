@@ -1,0 +1,42 @@
+version: '{build}'
+skip_tags: true
+init:
+- cmd: git config --global core.symlinks true
+environment:
+  CACHE: C:\cache
+  CYGWIN_MIRROR: http://cygwin.mirror.constant.com
+  matrix:
+  - BUILD: x86_64-pc-cygwin
+  - BUILD: i686-pc-cygwin
+install:
+- echo BUILD is %BUILD%
+- if "%BUILD%"=="x86_64-pc-cygwin" set SETUP=setup-x86_64.exe && set CYGWIN_ROOT=C:\cygwin64
+- if "%BUILD%"=="i686-pc-cygwin" set SETUP=setup-x86.exe && set CYGWIN_ROOT=C:\cygwin
+- echo SETUP is %SETUP%
+- if not exist %CACHE% mkdir %CACHE%
+- appveyor DownloadFile http://cygwin.com/%SETUP% -FileName %CACHE%\%SETUP%
+- echo "Updating Cygwin"
+- '%CACHE%\%SETUP% -qnNdO -R "%CYGWIN_ROOT%" -s "%CYGWIN_MIRROR%" -l "%CACHE%"'
+- echo "Installing build dependencies"
+- '%CACHE%\%SETUP% -qnNdO -R "%CYGWIN_ROOT%" -s "%CYGWIN_MIRROR%" -l "%CACHE%" -P autoconf,automake,libtool,make,gcc-core,gcc-g++,libiconv-devel,libX11-devel,libxml2-devel,git,pkg-config'
+- echo "Install done"
+cache: C:\cache
+build_script:
+- 'echo Cygwin root is: %CYGWIN_ROOT%'
+- 'echo Build folder is: %APPVEYOR_BUILD_FOLDER%'
+- 'echo Repo build branch is: %APPVEYOR_REPO_BRANCH%'
+- 'echo Repo build commit is: %APPVEYOR_REPO_COMMIT%'
+- set PATH=%CYGWIN_ROOT%/bin
+- echo "Autoconf running..."
+- '%CYGWIN_ROOT%/bin/bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; NOCONFIGURE=1 ./autogen.sh"'
+- echo "Configure running..."
+- '%CYGWIN_ROOT%/bin/bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; ./configure --prefix=/usr"'
+- echo "Make running..."
+- '%CYGWIN_ROOT%/bin/bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; make"'
+- echo "Installing"
+- '%CYGWIN_ROOT%/bin/bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; make install DESTDIR=./install"'
+- echo "Build done"
+test: off
+artifacts:
+- path: install/usr/bin/xlaunch.exe
+  name: xlaunch.exe
